@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+$primary-color: blue;
+
+body {
+  font-family: sans-serif;
+  margin: 20px;
+}
+
+nav {
+  margin-bottom: 20px;
+
+  a { // Nesting in SCSS
+    margin-right: 15px;
+    text-decoration: none;
+    color: $primary-color; // Using the variable
+  }
+}
+
+.product-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}

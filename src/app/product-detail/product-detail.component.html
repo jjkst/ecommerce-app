@@ -1,0 +1,10 @@
+<div *ngIf="product">
+    <h2>{{ product.name }}</h2>
+    <p>Price: ${{ product.price }}</p>
+    <button (click)="addToCart()">Add to Cart</button>
+    <button routerLink="/">Back to Products</button>
+  </div>
+  <div *ngIf="!product">
+    <p>Product not found.</p>
+    <button routerLink="/">Back to Products</button>
+  </div>

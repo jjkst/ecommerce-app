@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationComponent } from './navigation/navigation.component';
+import { ProductListComponent } from './product-list/product-list.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [RouterOutlet, NavigationComponent],
+  template: `
+    <app-navigation></app-navigation>
+    <router-outlet></router-outlet>
+  `
 })
-export class AppComponent {
-  title = 'ecommerce-app';
-}
+export class AppComponent { }
