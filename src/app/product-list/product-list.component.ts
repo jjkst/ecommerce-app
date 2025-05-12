@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgFor } from '@angular/common';
-import { Product } from '../product.model';
-import { ShoppingCartService } from '../shopping-cart.service';
+import { Product } from '../models/product.model';
+import { ShoppingCartService } from '../services/shopping-cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -13,9 +13,11 @@ import { ShoppingCartService } from '../shopping-cart.service';
 
 export class ProductListComponent implements OnInit {
   products: Product[] = [
-    { id: 1, name: 'Laptop', price: 1200 },
-    { id: 2, name: 'Mouse', price: 25 },
-    { id: 3, name: 'Keyboard', price: 75 }
+    { id: 1, name: 'Photo Shoot', price: 1200 },
+    { id: 2, name: 'Video Shoot', price: 25 },
+    { id: 3, name: 'Wedding Cermony', price: 75 },
+    { id: 4, name: 'Fliming', price: 75 },
+    { id: 5, name: 'Other Event', price: 75 }
     // ... more products
   ];
 

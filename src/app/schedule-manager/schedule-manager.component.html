@@ -1,0 +1,44 @@
+<h2>Manage Schedules</h2>
+
+<h3>Current Schedules</h3>
+<ul *ngIf="schedules.length > 0; else noSchedules">
+  <li *ngFor="let schedule of schedules">
+    <strong>{{ schedule.name }}</strong>
+    <p>Start: {{ schedule.startTime | date:'medium' }}</p>
+    <p>End: {{ schedule.endTime | date:'medium' }}</p>
+    <p *ngIf="schedule.description">Description: {{ schedule.description }}</p>
+  </li>
+</ul>
+<ng-template #noSchedules>
+  <p>No schedules created yet.</p>
+</ng-template>
+
+<h3>Add New Schedule</h3>
+<form [formGroup]="scheduleForm" (ngSubmit)="addSchedule()">
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name">
+    <div *ngIf="scheduleForm.controls['name'].invalid && (scheduleForm.controls['name'].dirty || scheduleForm.controls['name'].touched)">
+      <small class="error">Name is required.</small>
+    </div>
+  </div>
+  <div>
+    <label for="startTime">Start Time:</label>
+    <input type="datetime-local" id="startTime" formControlName="startTime">
+    <div *ngIf="scheduleForm.controls['startTime'].invalid && (scheduleForm.controls['startTime'].dirty || scheduleForm.controls['startTime'].touched)">
+      <small class="error">Start time is required.</small>
+    </div>
+  </div>
+  <div>
+    <label for="endTime">End Time:</label>
+    <input type="datetime-local" id="endTime" formControlName="endTime">
+    <div *ngIf="scheduleForm.controls['endTime'].invalid && (scheduleForm.controls['endTime'].dirty || scheduleForm.controls['endTime'].touched)">
+      <small class="error">End time is required.</small>
+    </div>
+  </div>
+  <div>
+    <label for="description">Description:</label>
+    <textarea id="description" formControlName="description"></textarea>
+  </div>
+  <button type="submit" [disabled]="scheduleForm.invalid">Add Schedule</button>
+</form>

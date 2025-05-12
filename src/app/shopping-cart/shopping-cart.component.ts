@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgFor, NgIf} from '@angular/common';
-import { Product } from '../product.model';
-import { ShoppingCartService } from '../shopping-cart.service';
+import { Product } from '../models/product.model';
+import { ShoppingCartService } from '../services/shopping-cart.service';
 
 @Component({
   selector: 'app-shopping-cart',

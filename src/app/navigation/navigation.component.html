@@ -1,4 +1,35 @@
-<nav>
-    <a routerLink="/">Products</a>
-    <a routerLink="/cart">Cart ({{ cartItemCount }})</a>
+<div class="mobile-nav">
+  <div class="menu-toggle" (click)="toggleMenu()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+  <div class="company-name">Nic Taylor</div>
+  <div class="company">photography</div>
+  <nav class="nav-links" [ngClass]="{'open': isMenuOpen}">
+    <ul>
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Services</a></li>
+      <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
+      <li><a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a></li>
+      <li><a routerLink="/schedule" routerLinkActive="active" (click)="closeMenu()">Schedule</a></li>
+      </ul>
   </nav>
+</div>
+
+<div class="desktop-nav">
+  <div class="company-branding">
+    <div class="company-title">Nic Taylor</div>
+    <div class="company-subtitle">photography</div>
+  </div>
+
+  <div class="nav-menu">
+    <ul>
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">SERVICES</a></li>
+      <li><a routerLink="/about" routerLinkActive="active">ABOUT</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">CONTACT</a></li>
+      <li><a routerLink="/cart" routerLinkActive="active">CART</a></li>
+      <li><a routerLink="/schedule" routerLinkActive="active">SCHEDULE</a></li>
+    </ul>
+  </div>
+</div>
