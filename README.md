@@ -50,7 +50,7 @@ For end-to-end (e2e) testing, run:
 ng e2e
 ```
 
-# Setup in mac to run the application
+## Setup in mac to run the application
 Install nvm 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 \. "$HOME/.nvm/nvm.sh" 
