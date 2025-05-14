@@ -1,7 +1,5 @@
 # EcommerceApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
-
 ## Development server
 
 To start a local development server, run:
@@ -52,8 +50,10 @@ For end-to-end (e2e) testing, run:
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+# Setup in mac to run the application
+Install nvm 
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+\. "$HOME/.nvm/nvm.sh" 
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+nvm install 24 # Install node
+npm install -g @angular/cli # Install angular cli
