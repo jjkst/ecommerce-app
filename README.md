@@ -51,9 +51,17 @@ ng e2e
 ```
 
 ## Setup in mac to run the application
-Install nvm 
+
+Install nvm:
+```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 \. "$HOME/.nvm/nvm.sh" 
-
-nvm install 24 # Install node
-npm install -g @angular/cli # Install angular cli
+```
+Install node:
+```bash
+nvm install 24 
+```
+Install angular cli:
+```bash
+npm install -g @angular/cli
+```
