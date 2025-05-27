@@ -22,6 +22,18 @@ export class LoginComponent {
       });
   }
 
+  signOut(): void {
+    this.googleSigninService.signOut()
+      .then(() => {
+        // Handle sign-out success
+        console.log('Signed out successfully');
+      })
+      .catch(error => {
+        // Handle sign-out error
+        console.error('Error signing out:', error);
+      });
+  }
+  
   signInWithApple(): void {
     console.log('Initiate Apple sign-in');
     // Call your Apple sign-in service method here
