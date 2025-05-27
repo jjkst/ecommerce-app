@@ -16,7 +16,7 @@ export class ProductListComponent implements OnInit {
     { id: 1, name: 'Photo Shoot', price: 1200 },
     { id: 2, name: 'Video Shoot', price: 25 },
     { id: 3, name: 'Wedding Cermony', price: 75 },
-    { id: 4, name: 'Fliming', price: 75 },
+    { id: 4, name: 'Filming', price: 75 },
     { id: 5, name: 'Other Event', price: 75 }
     // ... more products
   ];

@@ -4,12 +4,14 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { ScheduleManagerComponent } from './schedule-manager/schedule-manager.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'cart', component: ShoppingCartComponent },
-  { path: 'schedule', component: ScheduleManagerComponent }
+  { path: 'schedule', component: ScheduleManagerComponent },
+  { path: 'login', component: LoginComponent }
 ];
 
 export const appConfig: ApplicationConfig = {
