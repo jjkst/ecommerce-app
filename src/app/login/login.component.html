@@ -1,38 +1,14 @@
-<div class="login-page">
-  <div class="login-container">
-    <h2 style="color: aliceblue;">LOGIN</h2>
-
-    <div id="g_id_onload"
-         data-client_id="971414587807-cvvlcf93hr0dojvs94qqdj4eb7ras2oa.apps.googleusercontent.com"
-         data-context="signin"
-         data-ux_mode="popup"
-         data-login_uri="YOUR_BACKEND_GOOGLE_SIGNIN_ENDPOINT"
-         data-auto_prompt="false">
-    </div>
-
-    <div class="g_id_signin"
-         data-type="standard"
-         data-shape="rectangular"
-         data-theme="outline"
-         data-text="signin_with"
-         data-size="large"
-         data-logo_alignment="left">
-    </div>
-
-    <div class="social-login">
-      <button (click)="signInWithGoogle()" class="social-button">Sign in with Google</button>
-      <button id="google-button" class="social-button"></button>
-
-      <div style="color: aliceblue;" class="separator">OR</div>
-
-      <button (click)="signInWithApple()"  class="social-button">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
-          alt="Apple"
-        />
-        SIGN IN WITH APPLE
-      </button>
-    </div>
-
-  </div>
+<div *ngIf="!(authService.user$ | async); else loggedIn">
+  <h2>Welcome, Guest!</h2>
+  <div id="google-button"></div>
+  <p>Alternatively, Google One Tap might appear automatically.</p>
 </div>
+
+<ng-template #loggedIn>
+  <div *ngIf="authService.user$ | async as user">
+    <h2>Welcome, {{ user.name }}!</h2>
+    <img [src]="user.picture" alt="User Picture" referrerpolicy="no-referrer">
+    <p>Email: {{ user.email }}</p>
+    <button (click)="signOut()">Sign Out</button>
+  </div>
+</ng-template>

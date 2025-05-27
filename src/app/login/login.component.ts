@@ -1,39 +1,55 @@
-import { Component } from '@angular/core';
-import { GoogleSigninService } from './google-signin.service';
-
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Pipe } from '@angular/core';
+import { NgIf, AsyncPipe} from '@angular/common';
+import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-login',
+  imports: [NgIf, AsyncPipe],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  @ViewChild('googleButton', { static: true }) googleButtonDiv!: ElementRef; // For renderButton
 
-  constructor(private googleSigninService: GoogleSigninService) { }
+  private userSubscription!: Subscription;
+  constructor(public authService: AuthService) {}
 
-  signInWithGoogle(): void {
-    this.googleSigninService.signInWithGoogle()
-      .then(user => {
-        // Handle successful sign-in
-        console.log(user);
-      })
-      .catch(error => {
-        // Handle sign-in error
-        console.error(error);
-      });
+  ngOnInit() {
+    this.authService.initGoogleSignIn();
+
+    // If you want to render the button explicitly in a specific div:
+    // this.authService.renderGoogleButton(this.googleButtonDiv.nativeElement);
+
+    this.userSubscription = this.authService.user$.subscribe(user => {
+      if (user) {
+        console.log('User logged in from component:', user);
+      } else {
+        console.log('User logged out from component');
+      }
+    });
   }
+
+    // Optional: if you want to trigger sign-in with a custom button
+  signInWithGoogle(): void {
+  //   // This would typically be handled by the Google library's button
+  //   // or One Tap. For a truly custom programmatic trigger with GIS,
+  //   // you might need to explore advanced options or ensure the GIS client
+  //   // is initialized and then prompt for login.
+  //   // The `google.accounts.id.prompt()` in initGoogleSignIn usually handles this.
+  //   console.log('Custom sign in button clicked - GIS prompt should appear if configured');
+  }
+
 
   signOut(): void {
-    this.googleSigninService.signOut()
-      .then(() => {
-        // Handle sign-out success
-        console.log('Signed out successfully');
-      })
-      .catch(error => {
-        // Handle sign-out error
-        console.error('Error signing out:', error);
-      });
+    this.authService.signOut();
   }
-  
+
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
   signInWithApple(): void {
     console.log('Initiate Apple sign-in');
     // Call your Apple sign-in service method here
