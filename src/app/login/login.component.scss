@@ -7,13 +7,21 @@
 }
 
 .login-container {
-    background-color: blueviolet;
+    background-color: cornflowerblue;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 350px;
+    width: 500px;
+}
 
+.logout-container {
+    background-color: cornflowerblue;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 500px;
 }
 
 h2 {
