@@ -13,7 +13,8 @@
       <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
       <li><a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active" (click)="closeMenu()">Schedule</a></li>
-      <li><a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a></li>
+      <li *ngIf="!isLoggedIn"><a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a></li>
+      <li *ngIf="isLoggedIn"><a (click)="logout()">Logout</a></li>
       </ul>
   </nav>
 </div>
@@ -31,7 +32,8 @@
       <li><a routerLink="/contact" routerLinkActive="active">CONTACT</a></li>
       <li><a routerLink="/cart" routerLinkActive="active">CART</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active">SCHEDULE</a></li>
-      <li><a routerLink="/login" routerLinkActive="active">LOGIN</a></li>
+      <li *ngIf="!isLoggedIn"><a routerLink="/login" routerLinkActive="active">LOGIN</a></li>
+      <li *ngIf="isLoggedIn"><a (click)="logout()">LOGOUT</a></li>
     </ul>
   </div>
 </div>

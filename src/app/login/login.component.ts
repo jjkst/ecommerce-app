@@ -1,33 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [NgIf], 
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  user: any;
-
+  private router = inject(Router);
   constructor(private authService: AuthService) {}
 
   async login() {
-    try {
-      const user = await this.authService.loginWithGoogle();
-      this.user = user;
-      console.log(user);
-    }
-    catch (error) {
-      console.error("Login failed:", error);
-    }
+    const user = await this.authService.loginWithGoogle();
+    console.log(user);
+    this.router.navigate(['/']); 
   }
 
-  logout() {
-    this.user = null;
-    return this.authService.logout();
+  async logout() {
+    return await this.authService.logout();
   }
-
+  
 }

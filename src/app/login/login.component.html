@@ -1,5 +1,5 @@
 <div class="login-page">
-  <div *ngIf="!user" class="login-container">
+  <div class="login-container">
     <h2 style="color: aliceblue;">LOGIN</h2>
     <div class="social-login">
       <button id="google-button" (click)="login()" class="social-button">
@@ -28,13 +28,6 @@
         SIGN IN WITH APPLE
       </button>
       <div style="color: aliceblue;" class="separator"></div>
-    </div>
-
-  </div>
-  <div *ngIf="user" class="logout-container">
-    <h2 style="color: aliceblue;">LOGOUT</h2>
-    <div class="social-login">
-      <button id="logout-button" (click)="logout()" class="social-button">SIGN OUT</button>
     </div>
 
   </div>
