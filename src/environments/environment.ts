@@ -7,5 +7,6 @@ export const environment = {
         storageBucket: "ecommerceapp-kj.firebasestorage.app",
         messagingSenderId: "885088026597",
         appId: "1:885088026597:web:92558a01df77c1f804390c"
-    }
+    },
+    apiBaseUrl: 'http://localhost:5269/api' // Base URL for development
   };

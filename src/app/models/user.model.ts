@@ -1,9 +1,22 @@
 
 export interface User {
     id?: number;
-    provider: string;
-    name: string;
-    email: Date;
+    displayname: string | null;
+    email: string | null;
     emailVerified: boolean;
-    userToken: string
+    uid: string;
+    role: number;
+    provider: number;
+  }
+
+  export enum UserRole {
+    Admin = 1,
+    Owner = 2, 
+    Subscriber = 3
+  }
+
+  export enum ProviderList{
+    Google = 1,
+    Facebook = 2,
+    Apple = 3
   }

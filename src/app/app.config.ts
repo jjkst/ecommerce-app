@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { provideHttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    provideHttpClient()
   ]
 };
