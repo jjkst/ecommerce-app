@@ -50,6 +50,7 @@ export class LoginComponent {
       const existingUser = users.find(u => u.uid === userData.uid);
       if (existingUser) {
         console.log('User already exists!');
+        this.authService.userSubject.next(existingUser);
         this.router.navigate(['/']);
         return;
       }

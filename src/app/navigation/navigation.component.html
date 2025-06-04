@@ -13,6 +13,12 @@
       <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
       <li><a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active" (click)="closeMenu()">Schedule</a></li>
+      <li *ngIf="isAdmin || isOwner">
+        <a (click)="toggleSubMenu()">Admin</a>
+        <ul *ngIf="isSubMenuOpen" class="submenu">
+          <li><a routerLink="/admin/AddAvailability" routerLinkActive="active">ADD AVAILABILITY</a></li>
+        </ul>
+      </li>
       <li *ngIf="!isLoggedIn"><a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a></li>
       <li *ngIf="isLoggedIn"><a (click)="logout()">Logout</a></li>
       </ul>
@@ -32,6 +38,13 @@
       <li><a routerLink="/contact" routerLinkActive="active">CONTACT</a></li>
       <li><a routerLink="/cart" routerLinkActive="active">CART</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active">SCHEDULE</a></li>
+      <li *ngIf="isAdmin || isOwner">
+        <a (click)="toggleSubMenu()">ADMIN</a>
+        <ul *ngIf="isSubMenuOpen" class="submenu">
+          <li><a routerLink="/admin/AddAvailability" routerLinkActive="active">ADD AVAILABILITY</a></li>
+          <li><a routerLink="/admin/AddProduct" routerLinkActive="active">ADD PRODUCT</a></li>
+        </ul>
+      </li>
       <li *ngIf="!isLoggedIn"><a routerLink="/login" routerLinkActive="active">LOGIN</a></li>
       <li *ngIf="isLoggedIn"><a (click)="logout()">LOGOUT</a></li>
     </ul>

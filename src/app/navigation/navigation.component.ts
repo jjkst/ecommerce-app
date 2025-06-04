@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass, NgIf } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
+import { UserRole } from '../models/user.model';
 
 @Component({
   selector: 'app-navigation',
@@ -13,11 +14,16 @@ import { ShoppingCartService } from '../services/shopping-cart.service';
 export class NavigationComponent {
 
   isMenuOpen = false;
+  isSubMenuOpen = false;
   isLoggedIn = false;
+  isAdmin = false;
+  isOwner = false;
 
   constructor(private authService: AuthService, private cartService: ShoppingCartService) {
     this.authService.user$.subscribe(user => {
-      this.isLoggedIn = !!user; // Update login status
+      this.isLoggedIn = !!user;
+      this.isAdmin = user?.role === UserRole.Admin;
+      this.isOwner = user?.role === UserRole.Owner;
     });
   }
 
@@ -25,8 +31,14 @@ export class NavigationComponent {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  toggleSubMenu(): void {
+    this.isSubMenuOpen = !this.isSubMenuOpen; 
+  }
+
+
   closeMenu(): void {
     this.isMenuOpen = false;
+    this.isSubMenuOpen = false; 
   }
 
   logout() {

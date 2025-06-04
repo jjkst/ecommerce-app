@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, BehaviorSubject} from 'rxjs';
 import { User } from '../models/user.model';
 import { environment } from '../../environments/environment';
 import { inject } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+
   private http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiBaseUrl}/users`; 
 
