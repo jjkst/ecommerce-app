@@ -98,7 +98,6 @@
 
         .company-title {
           font-size: 2em;
-          font-weight: bold;
           color: black;
           margin-bottom: 5px;
         }
@@ -108,7 +107,6 @@
           color: black;
           text-align: end;
           font-style: italic;
-          font-weight: bold;
         }
       }
   
@@ -134,7 +132,6 @@
           a {
             text-decoration: none;
             font-style: italic;
-            font-weight: bold;
             color: black;
             padding: 8px 12px;
             border-radius: 4px;
@@ -159,7 +156,6 @@
           top: 100%; /* Position below the parent */
           background-color: #f9f9f9;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          padding: 15px;
           white-space: nowrap; 
           z-index: 1000;
 

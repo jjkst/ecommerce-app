@@ -1,12 +1,11 @@
 
 export interface User {
-    id?: number;
-    displayname: string | null;
-    email: string | null;
-    emailVerified: boolean;
-    uid: string;
-    role: number;
-    provider: number;
+    DisplayName: string | null;
+    Email: string | null;
+    EmailVerified: boolean;
+    Uid: string;
+    Role: number;
+    Provider: number;
   }
 
   export enum UserRole {

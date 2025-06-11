@@ -13,7 +13,7 @@
       <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
       <li><a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active" (click)="closeMenu()">Schedule</a></li>
-      <li *ngIf="isAdmin || isOwner">
+      <li *ngIf="isLoggedIn">
         <a (click)="toggleSubMenu()">Admin</a>
         <ul *ngIf="isSubMenuOpen" class="submenu">
           <li><a routerLink="/admin/AddAvailability" routerLinkActive="active">ADD AVAILABILITY</a></li>
@@ -38,7 +38,7 @@
       <li><a routerLink="/contact" routerLinkActive="active">CONTACT</a></li>
       <li><a routerLink="/cart" routerLinkActive="active">CART</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active">SCHEDULE</a></li>
-      <li *ngIf="isAdmin || isOwner">
+      <li *ngIf="isLoggedIn" class="has-submenu" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false">
         <a (click)="toggleSubMenu()">ADMIN</a>
         <ul *ngIf="isSubMenuOpen" class="submenu">
           <li><a routerLink="/admin/AddAvailability" routerLinkActive="active">ADD AVAILABILITY</a></li>

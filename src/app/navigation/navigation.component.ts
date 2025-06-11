@@ -3,7 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass, NgIf } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
-import { UserRole } from '../models/user.model';
+import { UserRole } from '../models/user.model';;
 
 @Component({
   selector: 'app-navigation',
@@ -23,7 +23,6 @@ export class NavigationComponent {
     this.authService.user$.subscribe(user => {
       this.isLoggedIn = !!user;
       this.isAdmin = user?.role === UserRole.Admin;
-      this.isOwner = user?.role === UserRole.Owner;
     });
   }
 

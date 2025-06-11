@@ -1,0 +1,20 @@
+<h1>Welcome to Our Services</h1>
+<p>Explore our range of photography services designed to capture your special moments.</p>
+
+<div class="card-grid">
+  <mat-card *ngFor="let product of products" class="mat-card" (click)="viewDetails(product.id)">
+    <mat-card-header>
+      <mat-card-title>{{ product.name }}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image src="Outdoor-Dining-and-Vistas.jpg" alt="{{ product.name }}" />
+  </mat-card>
+</div>
+
+
+
+
+<!-- <mat-card-actions>
+  <button mat-raised-button color="primary" (click)="addToCart(product); $event.stopPropagation()">
+    Add to Cart
+  </button>
+</mat-card-actions> -->

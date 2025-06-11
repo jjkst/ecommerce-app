@@ -22,6 +22,7 @@ export class LoginComponent {
   async loginWithGoogle() {
     let user: any; 
 
+    // Login with Google
     try {
       user = await this.authService.loginWithGoogle();
       console.log("Successfully logged in!!!");
@@ -30,24 +31,20 @@ export class LoginComponent {
       console.error('Login failed:', error);
       return;
     }
-    
-    const userData: User = {
-      displayname: user.displayName,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      uid: user.uid,
-      provider: ProviderList.Google, 
-      role: UserRole.Subscriber 
-    };
 
     try {
       const users: User[] = await this.userService.getUsers();
-      
+
       // Navigate to home page
       this.router.navigate(['/']);
 
+      if (!users || users.length === 0) {
+        console.error('Users array is empty or undefined.');
+        return;
+      }
+    
       // Check if user already exists
-      const existingUser = users.find(u => u.uid === userData.uid);
+      const existingUser = users.find(u => u.Uid === user.Uid);
       if (existingUser) {
         console.log('User already exists!');
         this.authService.userSubject.next(existingUser);
@@ -56,6 +53,14 @@ export class LoginComponent {
       }
 
       // Call user POST API after successful login
+      const userData: User = {
+        DisplayName: user.DisplayName,
+        Email: user.Email,
+        EmailVerified: user.EmailVerified,
+        Uid: user.Uid,
+        Role: UserRole.Subscriber,
+        Provider: ProviderList.Google
+      };
       await this.userService.addUser(userData);
       console.log('User data sent to API successfully.');
 

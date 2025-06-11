@@ -14,12 +14,12 @@ export class AuthService {
     try {
       const result = await signInWithPopup(this.auth, new GoogleAuthProvider());
       const user: User = {
-        displayname: result.user.displayName,
-        email: result.user.email,
-        emailVerified: result.user.emailVerified,
-        uid: result.user.uid,
-        role: UserRole.Subscriber, 
-        provider: ProviderList.Google
+        DisplayName: result.user.displayName,
+        Email: result.user.email,
+        EmailVerified: result.user.emailVerified,
+        Uid: result.user.uid,
+        Role: UserRole.Subscriber, 
+        Provider: ProviderList.Google
       };
 
       this.userSubject.next(user);
