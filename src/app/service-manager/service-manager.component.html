@@ -1,0 +1,87 @@
+<div class="service-manager-container">
+  <mat-toolbar [style.backgroundColor]="dynamicBackgroundColor"> 
+    <span class="toolbar-spacer"></span><span>{{ toolbarTitle }}</span>
+    <span class="toolbar-spacer"></span>
+  </mat-toolbar>
+  <div class="content">
+    <mat-card class="service-manager-card">
+      <mat-card-header>
+        <mat-card-title>{{ cardTitle }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+          <!-- Title Input -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Title</mat-label>
+            <input
+              matInput
+              formControlName="title"
+              placeholder="Enter service title"
+            />
+            <mat-error
+              *ngIf="serviceForm.controls['title'].hasError('required')"
+            >
+              Title is required
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Description Input -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              placeholder="Enter service description"
+            ></textarea>
+            <mat-error
+              *ngIf="serviceForm.controls['description'].hasError('required')"
+            >
+              Description is required
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Image Input -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Image Link</mat-label>
+            <input
+              matInput
+              formControlName="imageLink"
+              placeholder="Enter image URL"
+            />
+            <mat-error
+              *ngIf="serviceForm.controls['imageLink'].hasError('required')"
+            >
+              Image link is required
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Hourly Price Input -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Hourly Price</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="hourlyPrice"
+              placeholder="Enter hourly price"
+            />
+            <mat-error
+              *ngIf="serviceForm.controls['hourlyPrice'].hasError('required')"
+            >
+              Hourly price is required
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Submit Button -->
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="serviceForm.invalid"
+          >
+            Add Service
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { Product } from '../models/product.model';
 import { ShoppingCartService } from '../services/shopping-cart.service';
-import { MatCard, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-product-list',
@@ -12,7 +14,13 @@ import { MatCard, MatCardHeader, MatCardTitle } from '@angular/material/card';
     NgFor,
     MatCard,
     MatCardHeader,
-    MatCardTitle
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatGridList,
+    MatGridTile,
+    MatCardActions,
+    MatToolbarModule
   ], 
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss']

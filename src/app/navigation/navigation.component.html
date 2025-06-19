@@ -33,20 +33,20 @@
 
   <div class="nav-menu">
     <ul>
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">SERVICES</a></li>
-      <li><a routerLink="/about" routerLinkActive="active">ABOUT</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active">CONTACT</a></li>
-      <li><a routerLink="/cart" routerLinkActive="active">CART</a></li>
-      <li><a routerLink="/schedule" routerLinkActive="active">SCHEDULE</a></li>
-      <li *ngIf="isLoggedIn" class="has-submenu" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false">
-        <a (click)="toggleSubMenu()">ADMIN</a>
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Services</a></li>
+      <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      <li><a routerLink="/cart" routerLinkActive="active">Cart</a></li>
+      <li><a routerLink="/schedule" routerLinkActive="active">Schedule</a></li>
+      <li class="has-submenu" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false">
+        <a (click)="toggleSubMenu()">Admin</a>
         <ul *ngIf="isSubMenuOpen" class="submenu">
-          <li><a routerLink="/admin/AddAvailability" routerLinkActive="active">ADD AVAILABILITY</a></li>
-          <li><a routerLink="/admin/AddProduct" routerLinkActive="active">ADD PRODUCT</a></li>
+          <li><a routerLink="/admin/manage-services" routerLinkActive="active">Manage Services</a></li>
+          <li><a routerLink="/admin/manage-availability" routerLinkActive="active">Manage Availability</a></li>
         </ul>
       </li>
-      <li *ngIf="!isLoggedIn"><a routerLink="/login" routerLinkActive="active">LOGIN</a></li>
-      <li *ngIf="isLoggedIn"><a (click)="logout()">LOGOUT</a></li>
+      <li *ngIf="!isLoggedIn"><a routerLink="/login" routerLinkActive="active">Login</a></li>
+      <li *ngIf="isLoggedIn"><a (click)="logout()">Logout</a></li>
     </ul>
   </div>
 </div>

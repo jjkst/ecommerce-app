@@ -1,6 +1,6 @@
 // src/app/schedule.service.ts
 import { Injectable } from '@angular/core';
-import { Schedule } from 'commonlib';
+import { Schedule } from '../models/schedule.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
