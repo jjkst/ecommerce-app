@@ -86,29 +86,31 @@
   }
   
 .desktop-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-left: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.418); 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto; /* Center the navigation bar horizontally */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.418);
+  background-color: #fff; /* Optional: Add a background color */
+  padding: 10px; /* Optional: Add padding for better spacing */
+
 
     .company-branding {
-        flex-direction: column;
-        margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      margin-left: 20px;
 
         .company-title {
           font-size: 2em;
-          font-weight: bold;
-          color: gray;
+          color: black;
           margin-bottom: 5px;
         }
       
         .company-subtitle {
           font-size: 1.5em;
-          color: gray;
+          color: black;
           text-align: end;
           font-style: italic;
-          font-weight: bold;
         }
       }
   
@@ -120,17 +122,21 @@
         display: flex;
   
         li {
+          position: relative; 
           margin-left: 20px;
-  
+
           &:first-child {
             margin-left: 0;
           }
-  
+
+          &:last-child {
+            margin-right: 5em;
+          }
+
           a {
             text-decoration: none;
             font-style: italic;
-            font-weight: bold;
-            color: gray;
+            color: black;
             padding: 8px 12px;
             border-radius: 4px;
             transition: background-color 0.3s ease;
@@ -143,6 +149,37 @@
             &.active {
               font-weight: bold;
               color: #007bff;
+            }
+          }
+        }
+
+        .submenu {
+          position: absolute;
+          flex-direction: column; /* Stack items vertically */
+          right: 50%; /* Align to the center of the parent */
+          top: 100%; /* Position below the parent */
+          background-color: white;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          box-shadow: 0 4px 4px rgba(0, 0, 0, 0);
+          white-space: nowrap; 
+
+  
+          li {
+            margin: 3px;
+            padding:  5px;
+            justify-content: center;
+
+            a {    
+              &:hover {
+                background-color: #e9ecef; /* Light hover background */
+                color: #007bff; /* Primary hover text */
+              }
+    
+              &.active {
+                font-weight: bold;
+                color: #007bff;
+              }
             }
           }
         }

@@ -1,8 +1,8 @@
-
 export interface Schedule {
-    id?: number;
-    name: string;
-    startTime: Date;
-    endTime: Date;
-    description?: string;
+    ContactName: string;
+    Service: string;
+    SelectedDate: Date;
+    Timeslot: string;
+    Note?: string;
+    Uid: string;
   }

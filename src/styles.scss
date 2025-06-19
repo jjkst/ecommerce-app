@@ -1,7 +1,13 @@
-$primary-color: blue;
+/* You can add global styles to this file, and also import other style files */
 
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  background-color: white;
-}
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 5px;
+    overflow-x: hidden; 
+  }
+  
+  body {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    max-width: 100vw;
+  }

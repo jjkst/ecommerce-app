@@ -11,8 +11,8 @@ export class ScheduleService {
   readonly schedules = this.schedules$.asObservable();
 
   private mockSchedules: Schedule[] = [
-    { id: 1, name: 'Weekend Sale Prep', startTime: new Date('2025-05-16T09:00:00'), endTime: new Date('2025-05-16T17:00:00'), description: 'Prepare website for the upcoming weekend sale.' },
-    { id: 2, name: 'Inventory Check', startTime: new Date('2025-05-19T10:00:00'), endTime: new Date('2025-05-19T12:00:00'), description: 'Check and update product inventory levels.' }
+    { id: 1, name: 'Weekend Sale Prep', selectedDate: new Date('2025-05-16'), startTime: new Date('2025-05-16T09:00:00'), endTime: new Date('2025-05-16T17:00:00'), description: 'Prepare website for the upcoming weekend sale.' },
+    { id: 2, name: 'Inventory Check', selectedDate: new Date('2025-05-19'), startTime: new Date('2025-05-19T10:00:00'), endTime: new Date('2025-05-19T12:00:00'), description: 'Check and update product inventory levels.' }
   ];
 
   constructor() {

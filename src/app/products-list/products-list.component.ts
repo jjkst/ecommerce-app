@@ -3,15 +3,30 @@ import { Router } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { Product } from '../models/product.model';
 import { ShoppingCartService } from '../services/shopping-cart.service';
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-product-list',
-  imports: [NgFor], 
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  standalone: true,
+  imports: [
+    NgFor,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatGridList,
+    MatGridTile,
+    MatCardActions,
+    MatToolbarModule
+  ], 
+  templateUrl: './products-list.component.html',
+  styleUrls: ['./products-list.component.scss']
 })
 
-export class ProductListComponent implements OnInit {
+export class ProductsListComponent implements OnInit {
   products: Product[] = [
     { id: 1, name: 'Photo Shoot', price: 1200 },
     { id: 2, name: 'Video Shoot', price: 25 },

@@ -1,4 +1,4 @@
-# EcommerceApp
+# Frontend
 
 ## Development server
 
