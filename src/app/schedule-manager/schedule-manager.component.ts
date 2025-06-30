@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-schedule-manager',
@@ -24,11 +25,14 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatSelectModule,
     MatCardModule,
+    MatToolbarModule
   ],
   templateUrl: './schedule-manager.component.html',
   styleUrls: ['./schedule-manager.component.scss']
 })
 export class ScheduleManagerComponent implements OnInit {
+    dynamicBackgroundColor: string = 'purple';
+    toolbarTitle: string = 'Schedule Manager'; 
     appointmentForm!: FormGroup;
     availableTimeSlots: string[] = [];
     availableServices: string[] = ['Photography', 'Videography', 'Event Planning']; // List of services

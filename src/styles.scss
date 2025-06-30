@@ -3,11 +3,6 @@
 html, body {
     height: 100%;
     width: 100%;
-    margin: 5px;
-    overflow-x: hidden; 
-  }
-  
-  body {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    overflow-x: initial; /* Prevent horizontal scrolling */
     max-width: 100vw;
   }

@@ -1,0 +1,70 @@
+.about-container {
+    margin: 20px 0 20px;
+
+    .title-section {
+      margin-bottom: 16px;
+      text-align: center;
+  
+        h1 {
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+  
+        p {
+          font-size: 1.5rem;
+        }
+
+    }
+  
+    .about-section,
+    .services-section,
+    .testimonials-section {
+      margin-bottom: 16px;
+  
+      mat-card-title {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+      }
+  
+      p {
+        font-size: 1rem;
+      }
+    }
+  
+    .services-section {
+      mat-grid-tile {
+        text-align: center;
+  
+        img {
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
+        }
+  
+        h3 {
+          margin-top: 8px;
+          font-size: 1.5rem;
+        }
+  
+        p {
+          font-size: 1rem;
+        }
+      }
+    }
+  
+    .testimonials-section {
+      .testimonial {
+        margin-bottom: 16px;
+  
+        p {
+          font-style: italic;
+        }
+  
+        span {
+          display: block;
+          margin-top: 8px;
+          font-weight: bold;
+        }
+      }
+    }
+  }

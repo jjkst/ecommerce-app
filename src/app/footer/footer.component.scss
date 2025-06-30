@@ -1,0 +1,39 @@
+.footer {
+    background-color: darkkhaki; /* Dark background */
+    color: white; /* White text */
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .social-media, .contact-details {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .social-media h3, .contact-details h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .social-media a {
+    display: block;
+    color: #007bff; /* Primary color for links */
+    text-decoration: none;
+    margin-bottom: 5px;
+  }
+  
+  .social-media a:hover {
+    text-decoration: underline;
+  }
+  
+  .contact-details p {
+    margin: 5px 0;
+  }

@@ -1,10 +1,11 @@
-import { ApplicationConfig, isDevMode, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withFetch  } from '@angular/common/http';
+
+import { ApplicationConfig, isDevMode, importProvidersFrom } from '@angular/core';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from '../../environment';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-// import { provideServiceWorker } from '@angular/service-worker';
 import { provideClientHydration } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms'; 
 
@@ -17,10 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    importProvidersFrom(ReactiveFormsModule),
-    //provideServiceWorker('ngsw-worker.js', {
-    //    enabled: !isDevMode(),
-    //    registrationStrategy: 'registerWhenStable:30000'
-    //})
+    importProvidersFrom(ReactiveFormsModule)
   ]
 };

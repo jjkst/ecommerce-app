@@ -1,11 +1,46 @@
 .appointment-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 200px); /* Adjust for header if any */
-  background-color: #f5f5f5;
-  padding: 20px;
-  gap: 20px;
+  flex-direction: column; /* Stack toolbar and card vertically */
+  align-items: center; /* Center content horizontally */
+
+  mat-toolbar {
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: lightskyblue;
+    border-radius: 8px; /* Apply border-radius */
+    overflow: hidden; /* Ensure content inside respects border-radius */
+    display: flex; // This is often already applied by Material, but explicitly stating it can help
+    justify-content: center; // Centers the content horizontally
+  
+    .toolbar-spacer {
+      flex: 1 1 auto; // Takes up available space, pushing content to center
+    }
+
+    span {
+        text-align: center;
+        color: white;
+    }
+  }
+
+  .content {
+    width: 80%; /* Ensure content spans full width */
+    max-width: 800px; /* Optional: Limit the max width of the card */
+    margin-top: 20px; /* Add spacing between toolbar and card */
+    padding: 20px;
+  }
+  
+  .service-manager-card {
+    max-width: 700px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .full-width {
+    width: 100%;
+    margin-bottom: 15px;
+  }
 }
 
 .appointment-card {

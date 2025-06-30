@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { Product } from '../models/product.model';
 import { ShoppingCartService } from '../services/shopping-cart.service';
-import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { MatCard, MatCardTitle } from '@angular/material/card';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -13,13 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   imports: [
     NgFor,
     MatCard,
-    MatCardHeader,
     MatCardTitle,
-    MatCardSubtitle,
-    MatCardContent,
-    MatGridList,
-    MatGridTile,
-    MatCardActions,
     MatToolbarModule
   ], 
   templateUrl: './products-list.component.html',
@@ -28,11 +22,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 export class ProductsListComponent implements OnInit {
   products: Product[] = [
-    { id: 1, name: 'Photo Shoot', price: 1200 },
-    { id: 2, name: 'Video Shoot', price: 25 },
-    { id: 3, name: 'Wedding Cermony', price: 75 },
-    { id: 4, name: 'Filming', price: 75 },
-    { id: 5, name: 'Other Event', price: 75 }
+    { id: 1, name: 'Photo Shoot', imageUrl: 'assets/Outdoor-Dining-and-Vistas.jpg', price: 1200 },
+    { id: 2, name: 'Video Shoot', imageUrl: 'assets/Outdoor-Dining-and-Vistas.jpg', price: 25 },
+    { id: 3, name: 'Wedding Cermony', imageUrl: 'assets/Outdoor-Dining-and-Vistas.jpg', price: 75 },
+    { id: 4, name: 'Filming', imageUrl: 'assets/Outdoor-Dining-and-Vistas.jpg', price: 75 },
+    { id: 5, name: 'Other Event', imageUrl: 'assets/Outdoor-Dining-and-Vistas.jpg', price: 75 }
     // ... more products
   ];
 

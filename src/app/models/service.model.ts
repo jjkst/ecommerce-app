@@ -1,6 +1,6 @@
 export interface Service {
     Title: string;
     Description: string;
-    ImageLink: string;
+    FileName: string;
     Price: number
   }

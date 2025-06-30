@@ -1,5 +1,5 @@
 <div class="service-manager-container">
-  <mat-toolbar [style.backgroundColor]="dynamicBackgroundColor"> 
+  <mat-toolbar [style.backgroundColor]="dynamicBackgroundColor">
     <span class="toolbar-spacer"></span><span>{{ toolbarTitle }}</span>
     <span class="toolbar-spacer"></span>
   </mat-toolbar>
@@ -40,19 +40,10 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Image Input -->
           <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Image Link</mat-label>
-            <input
-              matInput
-              formControlName="imageLink"
-              placeholder="Enter image URL"
-            />
-            <mat-error
-              *ngIf="serviceForm.controls['imageLink'].hasError('required')"
-            >
-              Image link is required
-            </mat-error>
+            <mat-label>Choose a file</mat-label>
+            <input matInput [value]="fileName" placeholder="No file chosen" readonly (click)="fileInput.click()">
+            <input type="file" #fileInput hidden (change)="onFileSelected($event)">
           </mat-form-field>
 
           <!-- Hourly Price Input -->

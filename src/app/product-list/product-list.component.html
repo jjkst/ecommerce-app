@@ -1,4 +1,14 @@
 <h2>Services</h2>
+
+<!-- Video Player -->
+<div class="video-container">
+  <video controls autoplay muted class="video-player">
+    <source src="SampleVideo.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+
 <div class="card-grid">
   <div *ngFor="let product of products" >
     <div class="card" (click)="viewDetails(product.id)">
@@ -8,5 +18,4 @@
       </div>
     </div>
   </div>
-  <div>
-</div>
+<div>

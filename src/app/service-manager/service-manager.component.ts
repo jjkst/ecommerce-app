@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon'; // For file upload icon
+import { ImageUploadService } from '../services/imageupload.service';
 
 @Component({
   selector: 'app-service-manager',
@@ -39,30 +40,27 @@ export class ServiceManagerComponent implements OnInit {
   cardTitle: string = 'Add Your Product/Service';
   services: Service[] = [];
 
-  selectedFile: File | null = null;
-  imagePreview: string | ArrayBuffer | null = null;
-  uploadStatus: string | null = null;
-  uploadError: string | null = null;
-  uploadedImageUrl: string | null = null;
-  uploadProgress: number | null = null; // For MatProgressBar
+  file: File | undefined; // For image file upload
+  fileName: string = '';
+  fileUploadError: string | null = null; // For image upload error message
 
-  constructor(private fb: FormBuilder, private productService: ProductService) {}
+  constructor(private fb: FormBuilder, private productService: ProductService, 
+    private imguploadService: ImageUploadService) {}
 
   async ngOnInit(): Promise<void> {
     this.serviceForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      imageLink: ['', Validators.required],
+      fileName: [''], // File name for the image
       hourlyPrice: ['', [Validators.required, Validators.min(0)]]
     });
-
-    const newService = this.serviceForm.value;
-    this.services = await this.productService.addService(newService);
   }
 
   async onSubmit(): Promise<void> {
     if (this.serviceForm.valid) {
       const newService = this.serviceForm.value;
+      newService.fileName = this.fileName; 
+      console.log('New Service Data:', newService);
       try {
         await this.productService.addService(newService);
         this.toolbarTitle = 'New Service Added Successfully';
@@ -79,99 +77,31 @@ export class ServiceManagerComponent implements OnInit {
         this.toolbarTitle = 'Error Adding Service';
         this.dynamicBackgroundColor = 'red';
       }
+
+      // Upload file
+      if (this.file) {
+        this.imguploadService.uploadImage(this.file).then(() => {
+          console.log('File uploaded successfully');
+          this.fileUploadError = null;
+        }).catch((error) => {
+          console.error('File upload failed:', error);
+          this.fileUploadError = 'Failed to upload file. Please try again.';
+        });
+      } else {
+        this.fileUploadError = 'Please select a valid file.';
+      }
     }
   }
 
   onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      this.resetUploadState(); // Reset previous states
-
-      // Create a URL for image preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    } else {
-      this.clearSelection(); // If no file is selected (e.g., dialog cancelled)
-    }
-  }
-
-  onUpload(): void {
-    if (!this.selectedFile) {
-      this.uploadError = 'Please select an image file first.';
-      return;
-    }
-
-    this.uploadStatus = 'Uploading...';
-    this.uploadError = null;
-    this.uploadedImageUrl = null;
-    this.uploadProgress = 0; // Start progress bar at 0
-
-    const formData = new FormData();
-    formData.append('image', this.selectedFile, this.selectedFile.name);
-
-    // const headers = new HttpHeaders();
-    // // Do NOT set Content-Type header when sending FormData.
-
-    // const req = new HttpRequest('POST', this.uploadUrl, formData, {
-    //   headers: headers,
-    //   reportProgress: true
-    // });
-
-    // this.http.request(req)
-    //   .pipe(
-    //     finalize(() => {
-    //       this.uploadProgress = null; // Hide progress bar on completion
-    //     })
-    //   )
-    //   .subscribe({
-    //     next: (event: HttpEventType | any) => {
-    //       if (event.type === HttpEventType.UploadProgress) {
-    //         this.uploadProgress = Math.round(100 * event.loaded / event.total);
-    //         this.uploadStatus = `Uploading... ${this.uploadProgress}%`;
-    //       } else if (event.type === HttpEventType.Response) {
-    //         console.log('Upload complete!', event);
-    //         if (event.status === HttpStatusCode.Ok || event.status === HttpStatusCode.Created) {
-    //           this.uploadStatus = 'Upload successful!';
-    //           this.uploadedImageUrl = event.body?.imageUrl || 'No URL returned';
-    //           // Optionally: this.clearFileInput(); if you want to immediately clear after success
-    //         } else {
-    //           this.uploadError = `Upload failed with status: ${event.status}`;
-    //         }
-    //       }
-    //     },
-    //     error: (err) => {
-    //       console.error('Upload Error:', err);
-    //       this.uploadStatus = 'Upload failed.';
-    //       this.uploadProgress = null; // Hide progress bar on error
-    //       if (err.status) {
-    //         this.uploadError = `Server error (${err.status}): ${err.error?.message || err.message || 'Something went wrong.'}`;
-    //       } else {
-    //         this.uploadError = `Network error: Could not connect to the server.`;
-    //       }
-    //     }
-    //   });
+    this.file = (event.target as HTMLInputElement).files?.[0];
+    if (this.file) {
+      this.fileName = this.file.name;
+    }   
   }
 
   // Resets all states and clears the file input
-  clearSelection(): void {
-    this.selectedFile = null;
-    this.imagePreview = null;
-    this.resetUploadState();
-    if (this.fileInput && this.fileInput.nativeElement) {
-      this.fileInput.nativeElement.value = '';
-    }
-  }
 
-  private resetUploadState(): void {
-    this.uploadStatus = null;
-    this.uploadError = null;
-    this.uploadedImageUrl = null;
-    this.uploadProgress = null;
-  }
 
   // services: Service[] = [
   //   { Title: 'Service 1', Description: 'Description 1', ImageLink: 'link1.jpg', Price: 100 },

@@ -1,0 +1,43 @@
+
+<!-- Video Player -->
+<div class="video-container">
+    <video controls autoplay muted class="video-player">
+      <source src="assets/SampleVideo.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  
+  <h1>Our Services</h1>
+  <p>Explore our range of photography services designed to capture your special moments.</p>
+  
+  <div class="card-grid">
+    
+    <mat-card *ngFor="let product of products" class="mat-card" (click)="viewDetails(product.id)">
+      <img mat-card-image [src]="product.imageUrl"  alt="{{ product.name }}" />
+      <mat-card-title>{{ product.name }}</mat-card-title>
+    </mat-card>
+  
+  </div>
+  
+  <div class="testimony-section">
+    <h2>What Our Clients Say</h2>
+    <div class="testimony">
+      <p>"Nic Taylor Photography captured the most beautiful moments of our wedding. Highly recommend!"</p>
+      <span>- Sarah & John</span>
+    </div>
+    <div class="testimony">
+      <p>"The team was professional and made us feel comfortable during the shoot. The photos turned out amazing!"</p>
+      <span>- Emily R.</span>
+    </div>
+    <div class="testimony">
+      <p>"Great experience! The outdoor shoot was stunning, and the team was very accommodating."</p>
+      <span>- Michael T.</span>
+    </div>
+  </div>
+  
+  
+  <!-- <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="addToCart(product); $event.stopPropagation()">
+      Add to Cart
+    </button>
+  </mat-card-actions> -->
