@@ -1,67 +1,143 @@
-# Frontend
+# E-commerce Application
 
-## Development server
+A modern Angular-based e-commerce platform with authentication, product management, shopping cart, and scheduling features.
 
-To start a local development server, run:
+## 🚀 Features
 
-```bash
-ng serve
+### Core Features
+- **Product Catalog**: Browse and view product details
+- **Shopping Cart**: Add/remove items and manage cart
+- **User Authentication**: Google OAuth integration
+- **Admin Panel**: Service management for administrators
+- **Scheduling System**: Appointment booking and management
+- **Responsive Design**: Mobile-first approach
+
+### User Roles
+- **Admin**: Full access to service management
+- **Owner**: Business management capabilities  
+- **Subscriber**: Standard user with shopping features
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Angular 20
+- **UI Framework**: Angular Material
+- **Authentication**: Firebase Auth
+- **Styling**: SCSS
+- **Testing**: Jasmine & Karma
+- **SSR**: Angular Universal
+
+## 📋 Prerequisites
+
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+- Angular CLI (v20)
+
+## 🔧 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd ecommerce-app
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Firebase**
+   - Create a Firebase project
+   - Enable Google Authentication
+   - Update environment configuration
+
+4. **Start development server**
+   ```bash
+   npm start
+   ```
+
+5. **Open browser**
+   Navigate to `http://localhost:4200`
+
+## 📁 Project Structure
+
+```
+src/app/
+├── components/
+│   ├── login/           # Authentication
+│   ├── product-list/    # Product catalog
+│   ├── product-detail/  # Product details
+│   ├── shopping-cart/   # Cart management
+│   ├── schedule-manager/ # Appointment booking
+│   ├── service-manager/ # Admin service management
+│   └── navigation/      # Navigation bar
+├── models/              # TypeScript interfaces
+├── services/            # Business logic
+└── routes/              # Application routing
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🔐 Authentication
 
-## Code scaffolding
+The app uses Firebase Authentication with:
+- Google OAuth provider
+- User role management
+- Session persistence
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🛍️ Shopping Features
 
-```bash
-ng generate component component-name
-```
+- Product browsing and search
+- Add/remove items from cart
+- Cart persistence
+- Checkout process
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 📅 Scheduling System
 
-```bash
-ng generate --help
-```
+- Create appointments
+- Select services and time slots
+- Add notes to bookings
+- Manage availability
 
-## Building
+## 🎨 Styling
 
-To build the project run:
+- Angular Material components
+- SCSS preprocessing
+- Responsive design
+- Azure Blue theme
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 🧪 Testing
 
 ```bash
-ng e2e
+# Run unit tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
 ```
 
-## Setup in mac to run the application
+## 🚀 Deployment
 
-Install nvm:
 ```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-\. "$HOME/.nvm/nvm.sh" 
+# Build for production
+npm run build
+
+# Build with SSR
+npm run build:ssr
 ```
-Install node:
-```bash
-nvm install 24 
-```
-Install angular cli:
-```bash
-npm install -g @angular/cli
-```
+
+## 📱 Browser Support
+
+- Chrome, Firefox, Safari, Edge (latest versions)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make changes and add tests
+4. Submit a pull request
+
+## 📄 License
+
+MIT License
+
+## 🆘 Support
+
+For issues and questions, please check the documentation or create an issue in the repository.

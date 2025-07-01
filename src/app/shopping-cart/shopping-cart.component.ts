@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor, NgIf} from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { Product } from '../models/product.model';
 import { ShoppingCartService } from '../services/shopping-cart.service';
+import { MaterialModule } from '../material.module';
 
 @Component({
   selector: 'app-shopping-cart',
-  imports: [NgFor, NgIf], 
+  imports: [CommonModule, MaterialModule],
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.scss']
 })

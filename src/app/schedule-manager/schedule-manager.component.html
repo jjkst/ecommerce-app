@@ -104,19 +104,19 @@
           *ngFor="let appointment of scheduledAppointments; let i = index"
           class="scheduled-appointment"
         >
-          <p><strong>Service:</strong> {{ appointment.service }}</p>
+          <p><strong>Service:</strong> {{ appointment.Service }}</p>
           <p>
-            <strong>Date:</strong> {{ appointment.date | date : "mediumDate" }}
+            <strong>Date:</strong> {{ appointment.SelectedDate| date : "mediumDate" }}
           </p>
-          <p><strong>Time:</strong> {{ appointment.time }}</p>
-          <p *ngIf="appointment.note">
-            <strong>Description:</strong> {{ appointment.note }}
+          <p><strong>Time:</strong> {{ appointment.Timeslot }}</p>
+          <p *ngIf="appointment.Note">
+            <strong>Description:</strong> {{ appointment.Note }}
           </p>
           <div class="appointment-actions">
-            <button mat-button color="primary" (click)="editAppointment(i)">
+            <button mat-button color="primary" (click)="editAppointment(scheduledAppointments[i])">
               Edit
             </button>
-            <button mat-button color="warn" (click)="deleteAppointment(i)">
+            <button mat-button color="warn" (click)="deleteAppointment(scheduledAppointments[i])">
               Delete
             </button>
           </div>

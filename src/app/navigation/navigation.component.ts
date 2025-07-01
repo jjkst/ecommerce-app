@@ -1,29 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgClass, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
-import { UserRole } from '../models/user.model';;
+import { UserRole } from '../models/user.model';
 
 @Component({
   selector: 'app-navigation',
-  imports: [RouterLink, RouterLinkActive, NgClass, NgIf],
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent {
-
+export class NavigationComponent implements OnInit, OnDestroy {
   isMenuOpen = false;
   isSubMenuOpen = false;
   isLoggedIn = false;
   isAdmin = false;
   isOwner = false;
+  private destroy$ = new Subject<void>();
 
-  constructor(private authService: AuthService, private cartService: ShoppingCartService) {
-    this.authService.user$.subscribe(user => {
-      this.isLoggedIn = !!user;
-      this.isAdmin = user?.role === UserRole.Admin;
-    });
+  constructor(
+    private authService: AuthService, 
+    private cartService: ShoppingCartService
+  ) {}
+
+  ngOnInit(): void {
+    this.setupAuthSubscription();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupAuthSubscription(): void {
+    this.authService.user$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (user) => {
+          this.isLoggedIn = !!user;
+          this.isAdmin = user?.Role === UserRole.Admin;
+          this.isOwner = user?.Role === UserRole.Owner;
+        },
+        error: (error) => {
+          console.error('Error in auth subscription:', error);
+          this.isLoggedIn = false;
+          this.isAdmin = false;
+          this.isOwner = false;
+        }
+      });
   }
 
   toggleMenu(): void {
@@ -34,14 +60,18 @@ export class NavigationComponent {
     this.isSubMenuOpen = !this.isSubMenuOpen; 
   }
 
-
   closeMenu(): void {
     this.isMenuOpen = false;
     this.isSubMenuOpen = false; 
   }
 
-  logout() {
-    this.authService.logout();
+  async logout(): Promise<void> {
+    try {
+      await this.authService.logout();
+      console.log('User logged out successfully');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   }
 
   get cartItemCount(): number {

@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Required for ngIf, ngFor
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
-// Angular Material Imports
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core'; // Provides date adapter
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
+
+// Services and Models
+import { ScheduleService } from '../services/schedule.service';
+import { Schedule } from '../models/schedule.model';
+import { MaterialModule } from '../material.module';
 
 @Component({
   selector: 'app-schedule-manager',
@@ -18,140 +15,204 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatCardModule,
-    MatToolbarModule
+    MaterialModule
   ],
   templateUrl: './schedule-manager.component.html',
   styleUrls: ['./schedule-manager.component.scss']
 })
-export class ScheduleManagerComponent implements OnInit {
+export class ScheduleManagerComponent implements OnInit, OnDestroy {
     dynamicBackgroundColor: string = 'purple';
     toolbarTitle: string = 'Schedule Manager'; 
     appointmentForm!: FormGroup;
     availableTimeSlots: string[] = [];
     availableServices: string[] = ['Photography', 'Videography', 'Event Planning']; // List of services
-    submittedAppointment: { service: string; date: Date; time: string; note?: string } | null = null;
-    scheduledAppointments: { service: string; date: Date; time: string; note?: string }[] = [];
+    scheduledAppointments: Schedule[] = [];
+    loading = false;
+    error: string | null = null;
+    private destroy$ = new Subject<void>();
   
-    constructor(private fb: FormBuilder) {}
+    constructor(
+      private fb: FormBuilder,
+      private scheduleService: ScheduleService
+    ) {}
   
     ngOnInit(): void {
-      this.appointmentForm = this.fb.group({
-        selectedService: [null, Validators.required], 
-        selectedDate: [null, Validators.required],
-        selectedTimeSlot: [{ value: null, disabled: true }, Validators.required],
-        note: [''] 
-      });
+      this.initializeForm();
+      this.loadSchedules();
+      this.setupFormSubscriptions();
+    }
   
-      // Subscribe to date changes to enable/disable time slot and populate
-      this.appointmentForm.get('selectedDate')?.valueChanges.subscribe((date: Date | null) => {
+    ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
+    }
+  
+    private initializeForm(): void {
+      this.appointmentForm = this.fb.group({
+        ContactName: ['', Validators.required],
+        Service: ['', Validators.required],
+        SelectedDate: [null, Validators.required],
+        Timeslot: [{ value: null, disabled: true }, Validators.required],
+        Note: [''],
+        Uid: ['']
+      });
+    }
+  
+    private setupFormSubscriptions(): void {
+      this.appointmentForm.get('SelectedDate')?.valueChanges.subscribe((date: Date | null) => {
         this.populateTimeSlots(date);
       });
     }
   
+    async loadSchedules(): Promise<void> {
+      this.loading = true;
+      this.error = null;
+  
+      try {
+        // Use local state for now (can be changed to API call later)
+        this.scheduleService.getSchedules().subscribe(schedules => {
+          this.scheduledAppointments = schedules;
+          console.log('Schedules loaded:', schedules);
+        });
+      } catch (error) {
+        console.error('Error loading schedules:', error);
+        this.error = 'Failed to load schedules. Please try again later.';
+      } finally {
+        this.loading = false;
+      }
+    }
+  
     onDateChange(): void {
-      // This method is triggered by dateInput and dateChange events
-      // The valueChanges subscription handles the actual logic.
-      // We clear the selected time slot if the date changes.
-      this.appointmentForm.get('selectedTimeSlot')?.setValue(null);
+      this.appointmentForm.get('Timeslot')?.setValue(null);
     }
   
     private populateTimeSlots(date: Date | null): void {
-      this.availableTimeSlots = []; // Clear previous slots
+      this.availableTimeSlots = [];
+      
       if (date) {
-        // In a real application, you'd make an API call here:
-        // this.appointmentService.getAvailableTimeSlots(date).subscribe(slots => {
-        //   this.availableTimeSlots = slots;
-        //   this.appointmentForm.get('selectedTimeSlot')?.enable();
-        // });
-  
-        // For demonstration, we'll generate mock slots
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Normalize to start of day for comparison
+        today.setHours(0, 0, 0, 0);
         const selectedDateNormalized = new Date(date);
         selectedDateNormalized.setHours(0, 0, 0, 0);
   
-        // Simple mock logic:
         if (selectedDateNormalized.getTime() === today.getTime()) {
-          // For today, offer slots from now onwards (mock current time)
+          // For today, offer slots from now onwards
           const currentHour = new Date().getHours();
-          for (let i = currentHour + 1; i < 18; i++) { // From next hour until 5 PM
+          for (let i = currentHour + 1; i < 18; i++) {
             this.availableTimeSlots.push(`${i}:00 - ${i}:30`);
             this.availableTimeSlots.push(`${i}:30 - ${i + 1}:00`);
           }
         } else if (selectedDateNormalized.getTime() > today.getTime()) {
           // For future dates, offer a full day of slots
-          for (let i = 9; i < 17; i++) { // From 9 AM to 4 PM
+          for (let i = 9; i < 17; i++) {
             this.availableTimeSlots.push(`${i}:00 - ${i}:30`);
             this.availableTimeSlots.push(`${i}:30 - ${i + 1}:00`);
           }
         }
   
-        // Enable time slot selection if slots are available
         if (this.availableTimeSlots.length > 0) {
-          this.appointmentForm.get('selectedTimeSlot')?.enable();
+          this.appointmentForm.get('Timeslot')?.enable();
         } else {
-          this.appointmentForm.get('selectedTimeSlot')?.disable();
+          this.appointmentForm.get('Timeslot')?.disable();
         }
       } else {
-        this.appointmentForm.get('selectedTimeSlot')?.disable();
+        this.appointmentForm.get('Timeslot')?.disable();
       }
     }
   
-    onSubmit(): void {
+    async onSubmit(): Promise<void> {
       if (this.appointmentForm.valid) {
-        const formValue = this.appointmentForm.value;
-        this.submittedAppointment = {
-          service: formValue.selectedService ? this.availableServices[0] : '', // Default to first service for demo
-          date: formValue.selectedDate,
-          time: formValue.selectedTimeSlot,
-          note: formValue.note || '' 
-        };
-        console.log('Appointment Scheduled:', this.submittedAppointment);
+        this.loading = true;
+        this.error = null;
   
-        this.scheduledAppointments.push(this.submittedAppointment); // Add to scheduled appointments
-        this.appointmentForm.reset(); // Reset the form
-
-        // In a real app, you would send this data to your backend API:
-        // this.appointmentService.scheduleAppointment(this.submittedAppointment).subscribe({
-        //   next: (response) => {
-        //     console.log('Backend response:', response);
-        //     // Show success message, clear form, etc.
-        //     this.appointmentForm.reset();
-        //     this.appointmentForm.get('selectedTimeSlot')?.disable();
-        //     this.availableTimeSlots = [];
-        //   },
-        //   error: (err) => {
-        //     console.error('Error scheduling appointment:', err);
-        //     // Show error message
-        //   }
-        // });
+        try {
+          const formValue = this.appointmentForm.value;
+          const scheduleData: Schedule = {
+            ContactName: formValue.ContactName,
+            Service: formValue.Service,
+            SelectedDate: formValue.SelectedDate,
+            Timeslot: formValue.Timeslot,
+            Note: formValue.Note || '',
+            Uid: formValue.Uid || this.generateUid()
+          };
+  
+          // Validate data before submission
+          if (!this.scheduleService.validateScheduleData(scheduleData)) {
+            throw new Error('Please fill in all required fields correctly.');
+          }
+  
+          // Add to local state (can be changed to API call later)
+          this.scheduleService.addSchedule(scheduleData);
+          
+          this.toolbarTitle = 'Appointment Scheduled Successfully!';
+          this.dynamicBackgroundColor = 'green';
+          this.appointmentForm.reset();
+          this.appointmentForm.get('Timeslot')?.disable();
+          this.availableTimeSlots = [];
+  
+          console.log('Appointment scheduled:', scheduleData);
+        } catch (error) {
+          console.error('Error scheduling appointment:', error);
+          this.error = this.formatErrorMessage(error);
+          this.toolbarTitle = 'Error Scheduling Appointment';
+          this.dynamicBackgroundColor = 'red';
+        } finally {
+          this.loading = false;
+        }
       } else {
-        // Mark all fields as touched to show validation errors
         this.appointmentForm.markAllAsTouched();
+        this.error = 'Please fill in all required fields correctly.';
       }
     }
-
-    editAppointment(index: number): void {
-      const appointment = this.scheduledAppointments[index];
+  
+    editAppointment(schedule: Schedule): void {
       this.appointmentForm.patchValue({
-        selectedService: appointment.service,
-        selectedDate: appointment.date,
-        selectedTimeSlot: appointment.time,
-        note: appointment.note
+        ContactName: schedule.ContactName,
+        Service: schedule.Service,
+        SelectedDate: schedule.SelectedDate,
+        Timeslot: schedule.Timeslot,
+        Note: schedule.Note,
+        Uid: schedule.Uid
       });
   
-      // Optionally remove the appointment from the list to avoid duplication
-      this.scheduledAppointments.splice(index, 1);
+      // Remove from list to avoid duplication
+      this.scheduledAppointments = this.scheduledAppointments.filter(
+        s => s.Uid !== schedule.Uid
+      );
     }
   
-    deleteAppointment(index: number): void {
-      this.scheduledAppointments.splice(index, 1); // Remove the appointment from the list
+    deleteAppointment(schedule: Schedule): void {
+      this.scheduledAppointments = this.scheduledAppointments.filter(
+        s => s.Uid !== schedule.Uid
+      );
+      console.log('Appointment deleted:', schedule);
+    }
+  
+    private generateUid(): string {
+      return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    }
+  
+    retryLoad(): void {
+      this.loadSchedules();
+    }
+  
+    clearError(): void {
+      this.error = null;
+    }
+  
+    private formatErrorMessage(error: any): string {
+      if (typeof error === 'string') {
+        return error;
+      }
+      
+      if (error?.error?.message) {
+        return error.error.message;
+      }
+      
+      if (error?.message) {
+        return error.message;
+      }
+      
+      return 'An unexpected error occurred. Please try again.';
     }
 }

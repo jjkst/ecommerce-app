@@ -9,6 +9,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridList, MatGridTile, MatGridTileFooterCssMatStyler } from '@angular/material/grid-list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 
 @NgModule({
   imports: [
@@ -21,7 +27,12 @@ import { MatGridList, MatGridTile, MatGridTileFooterCssMatStyler } from '@angula
     MatIconModule,
     MatGridList,
     MatGridTile,
-    MatGridTileFooterCssMatStyler
+    MatGridTileFooterCssMatStyler,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    MatOptionModule,
+    MatDatepickerModule
   ],
   exports: [
     MatButtonModule,
@@ -32,7 +43,12 @@ import { MatGridList, MatGridTile, MatGridTileFooterCssMatStyler } from '@angula
     MatIconModule,
     MatGridList,
     MatGridTile,
-    MatGridTileFooterCssMatStyler
+    MatGridTileFooterCssMatStyler,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    MatOptionModule,
+    MatDatepickerModule
   ]
 })
 export class MaterialModule { }

@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
 import { User } from '../models/user.model';
-import { environment } from '../../../environment';
-import { inject } from '@angular/core';
+import { BaseService } from './base.service';
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class UserService extends BaseService {
+  private readonly endpoint = '/users';
 
-  private http = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiBaseUrl}/users`; 
-
-  async getUsers(): Promise<User[]> {
-    return await lastValueFrom(this.http.get<User[]>(`${this.apiUrl}`));
+  async getUsers(): Promise<HttpResponse<User[]>> {
+    return await this.get<User[]>(this.endpoint);
   }
 
-  async addUser(userData: User): Promise<any> {
-    return await lastValueFrom(this.http.post(`${this.apiUrl}`, userData));
+  async addUser(userData: User): Promise<HttpResponse<User>> {
+    return await this.post<User>(this.endpoint, userData);
+  }
+
+  async updateUser(id: string, userData: User): Promise<HttpResponse<User>> {
+    return await this.put<User>(`${this.endpoint}/${id}`, userData);
+  }
+
+  async deleteUser(id: string): Promise<HttpResponse<void>> {
+    return await this.delete<void>(`${this.endpoint}/${id}`);
   }
 }

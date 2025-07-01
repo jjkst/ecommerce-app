@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
-import { inject } from '@angular/core';
-import { environment } from 'environment';
+import { HttpResponse } from '@angular/common/http';
+import { BaseService } from './base.service';
 
-@Injectable({ providedIn: 'root' })
-export class ImageUploadService {
+@Injectable({
+  providedIn: 'root'
+})
+export class ImageUploadService extends BaseService {
+  private readonly endpoint = '/uploadimage';
 
-    private http = inject(HttpClient);
-    private readonly apiUrl = `${environment.apiBaseUrl}/uploadimage`; 
+  async uploadImage(file: File): Promise<HttpResponse<any>> {
+    const formData = this.createFormData({ file });
+    return await this.post<any>(this.endpoint, formData);
+  }
 
-    async uploadImage(file: File): Promise<any> {
-        const formData = new FormData();
-        formData.append('file', file);
-        return await lastValueFrom(this.http.post(`${this.apiUrl}`, formData));
-    }
-
+  async uploadMultipleImages(files: File[]): Promise<HttpResponse<any>> {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append(`files`, file);
+    });
+    return await this.post<any>(`${this.endpoint}/multiple`, formData);
+  }
 }

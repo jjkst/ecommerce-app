@@ -1,18 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../material.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   imports: [
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    CommonModule
   ],
   styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent implements OnInit {
   contactForm!: FormGroup;
+  loading = false;
+  successMessage = '';
+  errorMessage = '';
 
   constructor(private fb: FormBuilder) {}
 
@@ -27,8 +34,18 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.successMessage = '';
+    this.errorMessage = '';
     if (this.contactForm.valid) {
-      console.log('Form Submitted:', this.contactForm.value);
+      this.loading = true;
+      // Simulate async submission (replace with real API call)
+      setTimeout(() => { 
+        this.loading = false;
+        this.successMessage = 'Your message has been sent successfully!';
+        this.contactForm.reset();
+      }, 1500);
+    } else {
+      this.errorMessage = 'Please fill in all required fields correctly.';
     }
   }
 }

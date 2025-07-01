@@ -5,6 +5,12 @@
   <div class="form-section">
     <mat-card class="contact-card">
       <mat-card-content>
+        <!-- Feedback Messages -->
+        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div *ngIf="loading" class="loading-spinner" style="text-align:center; margin: 16px 0;">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
           <!-- First and Last Name -->
           <div class="row">
@@ -63,7 +69,7 @@
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="contactForm.invalid"
+            [disabled]="contactForm.invalid || loading"
           >
             Submit
           </button>

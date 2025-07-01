@@ -33,7 +33,8 @@ export class LoginComponent {
     }
 
     try {
-      const users: User[] = await this.userService.getUsers();
+      const response = await this.userService.getUsers();
+      const users: User[] = response.body || [];
 
       // Navigate to home page
       this.router.navigate(['/']);
