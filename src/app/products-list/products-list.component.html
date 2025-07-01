@@ -11,9 +11,9 @@
 
 <div class="card-grid">
   
-  <mat-card *ngFor="let product of products" class="mat-card" (click)="viewDetails(product.id)">
-    <img mat-card-image [src]="product.imageUrl"  alt="{{ product.name }}" />
-    <mat-card-title>{{ product.name }}</mat-card-title>
+  <mat-card *ngFor="let product of services" class="mat-card" (click)="viewDetails(product)">
+    <img mat-card-image [src]="product.FileName"  alt="{{ product.Title }}" />
+    <mat-card-title>{{ product.Title }}</mat-card-title>
   </mat-card>
 
 </div>
