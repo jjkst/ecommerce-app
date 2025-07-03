@@ -134,10 +134,8 @@ npm run build:ssr
 3. Make changes and add tests
 4. Submit a pull request
 
-## 📄 License
-
-MIT License
-
-## 🆘 Support
-
-For issues and questions, please check the documentation or create an issue in the repository.
+## SQL Scripts
+source /path/sql-scripts/CreateAvailabilityTable.sql;
+source /path/sql-scripts/CreateServiceTable.sql;
+source /path/sql-scripts/CreateScheduleTable.sql;
+source /path/sql-scripts/CreateUserTable.sql;

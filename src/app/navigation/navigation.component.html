@@ -41,7 +41,7 @@
       <li><a routerLink="/cart" routerLinkActive="active">Cart</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active">Schedule</a></li>
       <li class="has-submenu" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false">
-        <a (click)="toggleSubMenu()">Admin</a>
+        <a [routerLink]="['/admin']" routerLinkActive="active" (click)="toggleSubMenu()">Admin</a>
         <ul *ngIf="isSubMenuOpen" class="submenu">
           <li><a routerLink="/admin/manage-services" routerLinkActive="active">Manage Services</a></li>
           <li><a routerLink="/admin/manage-availability" routerLinkActive="active">Manage Availability</a></li>

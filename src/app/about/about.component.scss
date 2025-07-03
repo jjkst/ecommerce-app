@@ -1,70 +1,149 @@
 .about-container {
-    margin: 20px 0 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 12px;
+  font-family: 'Montserrat', sans-serif;
+}
 
-    .title-section {
-      margin-bottom: 16px;
-      text-align: center;
-  
-        h1 {
-            font-weight: 400;
-            margin-bottom: 8px;
-        }
-  
-        p {
-          font-size: 1.5rem;
-        }
+.about-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #23272b 60%, #3498db 100%);
+  color: #fff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
 
+  .about-hero-content {
+    flex: 1 1 300px;
+    min-width: 250px;
+    margin-right: 24px;
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      font-weight: 700;
     }
-  
-    .about-section,
-    .services-section,
-    .testimonials-section {
-      margin-bottom: 16px;
-  
-      mat-card-title {
-        font-size: 1.8rem;
-        margin-bottom: 8px;
+    p {
+      font-size: 1.2rem;
+      color: #ecf0f1;
+    }
+  }
+
+  .about-hero-img {
+    flex: 1 1 220px;
+    max-width: 320px;
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 16px;
+    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.15);
+  }
+}
+
+.about-section mat-card {
+  margin-bottom: 32px;
+}
+
+.services-section {
+  margin-bottom: 32px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+    color: #23272b;
+    font-weight: 600;
+  }
+
+  .services-grid {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .service-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+      padding: 18px 12px;
+      flex: 1 1 220px;
+      min-width: 180px;
+      max-width: 300px;
+      text-align: center;
+      margin-bottom: 18px;
+
+      img {
+        width: 100%;
+        max-width: 120px;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
       }
-  
+      h3 {
+        margin: 8px 0 4px 0;
+        font-size: 1.2rem;
+        color: #3498db;
+      }
       p {
         font-size: 1rem;
-      }
-    }
-  
-    .services-section {
-      mat-grid-tile {
-        text-align: center;
-  
-        img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
-        }
-  
-        h3 {
-          margin-top: 8px;
-          font-size: 1.5rem;
-        }
-  
-        p {
-          font-size: 1rem;
-        }
-      }
-    }
-  
-    .testimonials-section {
-      .testimonial {
-        margin-bottom: 16px;
-  
-        p {
-          font-style: italic;
-        }
-  
-        span {
-          display: block;
-          margin-top: 8px;
-          font-weight: bold;
-        }
+        color: #23272b;
       }
     }
   }
+}
+
+.testimonials-section {
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+    color: #23272b;
+    font-weight: 600;
+  }
+  .testimonials-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: space-between;
+  }
+  .testimonial {
+    background: #f7fafd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+    padding: 18px 14px;
+    flex: 1 1 220px;
+    min-width: 180px;
+    max-width: 320px;
+    margin-bottom: 12px;
+
+    p {
+      font-style: italic;
+      color: #23272b;
+      margin-bottom: 8px;
+    }
+    span {
+      display: block;
+      font-weight: bold;
+      color: #3498db;
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .about-hero {
+    flex-direction: column;
+    text-align: center;
+    .about-hero-content {
+      margin-right: 0;
+    }
+    .about-hero-img {
+      margin: 24px auto 0 auto;
+    }
+  }
+  .services-section .services-grid,
+  .testimonials-section .testimonials-list {
+    flex-direction: column;
+    align-items: center;
+  }
+} 

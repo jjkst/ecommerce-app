@@ -6,6 +6,7 @@ import { Service } from '../models/service.model';
 import { ProductService } from '../services/product.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
 import { MaterialModule } from '../material.module';
+import { Testimonial } from '../models/testimony.model';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ import { MaterialModule } from '../material.module';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   services: Service[] = [];
+  testimonials: Testimonial[] = [];
   loading = false;
   error: string | null = null;
   private destroy$ = new Subject<void>();
@@ -88,6 +90,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
         Price: 500 
       }
+    ];
+    this.testimonials = [
+      {
+        Quote: 'Nic Taylor Photography exceeded our expectations. The team was professional and the results were stunning!',
+        Author: 'Sarah & John'
+      },
     ];
   }
 

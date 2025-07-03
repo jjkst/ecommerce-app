@@ -5,10 +5,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
 import { UserRole } from '../models/user.model';
+import { MaterialModule } from '../material.module';
 
 @Component({
   selector: 'app-navigation',
-  imports: [RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterLink, RouterLinkActive, CommonModule, MaterialModule],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })

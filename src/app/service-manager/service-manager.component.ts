@@ -20,15 +20,11 @@ import { MaterialModule } from '../material.module';
 })
 export class ServiceManagerComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef;
-
   serviceForm!: FormGroup;
-  dynamicBackgroundColor: string = 'purple';
-  toolbarTitle: string = 'Service Manager'; 
-  cardTitle: string = 'Add Your Product/Service';
-  services: Service[] = [];
   loading = false;
-  error: string | null = null;
-  successMessage: string | null = null;
+  successMessage = '';
+  errorMessage = '';
+
   file: File | undefined;
   fileName: string = '';
   fileUploadError: string | null = null;
@@ -40,18 +36,7 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
     private imguploadService: ImageUploadService
   ) {}
 
-  ngOnInit(): Promise<void> {
-    this.initializeForm();
-    this.loadServices();
-    return Promise.resolve();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  private initializeForm(): void {
+  ngOnInit(): void {
     this.serviceForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
@@ -60,27 +45,16 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
     });
   }
 
-  async loadServices(): Promise<void> {
-    this.loading = true;
-    this.error = null;
-
-    try {
-      const response = await this.productService.getServices();
-      this.services = response.body || [];
-      console.log('Services loaded successfully:', this.services);
-    } catch (error) {
-      console.error('Error loading services:', error);
-      this.error = 'Failed to load services. Please try again later.';
-    } finally {
-      this.loading = false;
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   async onSubmit(): Promise<void> {
+    this.successMessage = '';
+    this.errorMessage = '';
     if (this.serviceForm.valid) {
       this.loading = true;
-      this.error = null;
-      this.successMessage = null;
 
       try {
         const formValue = this.serviceForm.value;
@@ -92,50 +66,33 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
         };
 
         // Validate required fields
-        const requiredFields = ['Title', 'Description', 'Price'];
-        if (!this.validateRequiredFields(newService, requiredFields)) {
+        if (!this.productService.validateServiceData(newService)) {
           throw new Error('Please fill in all required fields correctly.');
         }
 
-        console.log('New Service Data:', newService);
-
-        // Add service to API
         const response = await this.productService.addService(newService);
-        
         if (response.status === 200 || response.status === 201) {
-          this.toolbarTitle = 'New Service Added Successfully!';
-          this.dynamicBackgroundColor = 'green';
-          this.successMessage = 'Service added successfully!';
-          this.serviceForm.reset();
-          this.clearFileInput();
-          
-          // Reload services to show the new one
-          await this.loadServices();
+          this.successMessage = 'New Service Added Successfully!';
+          if (this.file) {
+            await this.uploadFile();
+            this.clearFileInput();
+          }
         }
-
-        // Upload file if selected
-        if (this.file) {
-          await this.uploadFile();
-        }
-
-      } catch (error: any) {
-        console.error('Error adding service:', error);
-        
-        if (error.status === 409) {
-          this.toolbarTitle = 'Service Already Exists';
-          this.dynamicBackgroundColor = 'orange';
-          this.error = 'A service with this name already exists.';
+        else if (response.status === 409) {
+          this.errorMessage = 'A service with this name already exists.';
         } else {
-          this.toolbarTitle = 'Error Adding Service';
-          this.dynamicBackgroundColor = 'red';
-          this.error = this.formatErrorMessage(error);
+          this.errorMessage = 'Error Adding Service'
+          console.error('Error Adding Service:', response);
         }
+      } catch (error: any) {
+        this.errorMessage = 'Error Adding Service'
+        console.error('Error adding service:', error);
       } finally {
         this.loading = false;
       }
     } else {
       this.serviceForm.markAllAsTouched();
-      this.error = 'Please fill in all required fields correctly.';
+      this.errorMessage = 'Please fill in all required fields correctly.';
     }
   }
 
@@ -193,49 +150,4 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  retryLoad(): void {
-    this.loadServices();
-  }
-
-  clearMessages(): void {
-    this.error = null;
-    this.successMessage = null;
-    this.fileUploadError = null;
-  }
-
-  getFieldError(fieldName: string): string {
-    const field = this.serviceForm.get(fieldName);
-    if (field?.errors && field.touched) {
-      if (field.errors['required']) {
-        return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required.`;
-      }
-      if (field.errors['minlength']) {
-        return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} must be at least ${field.errors['minlength'].requiredLength} characters.`;
-      }
-      if (field.errors['min']) {
-        return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} must be at least ${field.errors['min'].min}.`;
-      }
-    }
-    return '';
-  }
-
-  private validateRequiredFields(data: any, requiredFields: string[]): boolean {
-    return requiredFields.every(field => data[field] !== null && data[field] !== undefined && data[field] !== '');
-  }
-
-  private formatErrorMessage(error: any): string {
-    if (typeof error === 'string') {
-      return error;
-    }
-    
-    if (error?.error?.message) {
-      return error.error.message;
-    }
-    
-    if (error?.message) {
-      return error.message;
-    }
-    
-    return 'An unexpected error occurred. Please try again.';
-  }
 }

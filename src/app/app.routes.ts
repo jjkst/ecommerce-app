@@ -2,12 +2,17 @@ import { Routes } from '@angular/router';
 import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
-import { ScheduleManagerComponent } from './schedule-manager/schedule-manager.component';
-import { LoginComponent } from './login/login.component';
-import { ServiceManagerComponent } from './service-manager/service-manager.component';
+
+import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
-import { HomeComponent } from './home/home.component';
+import { ScheduleManagerComponent } from './schedule-manager/schedule-manager.component';
+import { ServiceManagerComponent } from './service-manager/service-manager.component';
+import { AvailabilityManagerComponent } from './availability-manager/availability-manager.component';
+import { LoginComponent } from './login/login.component';
+
+
+
 
 
 export const routes: Routes = [
@@ -16,6 +21,7 @@ export const routes: Routes = [
     { path: 'contact', component: ContactComponent },
     { path: 'login', component: LoginComponent },
     { path: 'admin/manage-services', component: ServiceManagerComponent },
+    { path: 'admin/manage-availability', component: AvailabilityManagerComponent },
     { path: 'products/:id', component: ProductDetailComponent },
     { path: 'cart', component: ShoppingCartComponent },
     { path: 'schedule', component: ScheduleManagerComponent }

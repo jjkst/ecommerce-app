@@ -25,4 +25,9 @@ export class ProductService extends BaseService {
   async deleteService(id: string): Promise<HttpResponse<void>> {
     return await this.delete<void>(`${this.endpoint}/${id}`);
   }
+
+  validateServiceData(service: Service): boolean {
+    const requiredFields = ['Title', 'Description', 'Price'];
+    return this.validateRequiredFields(service, requiredFields);
+  }
 }

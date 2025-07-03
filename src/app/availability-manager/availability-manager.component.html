@@ -1,0 +1,109 @@
+<div class="main-container">
+  <div class="title-section">
+    <h1>Add Your Availabilities</h1>
+  </div>
+  <div class="content">
+    <mat-card class="service-manager-card">
+      <!-- Feedback Messages -->
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <mat-card-content>
+        <form [formGroup]="availabilityForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Start Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="startPicker"
+              formControlName="StartDate"
+              required
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="startPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+            <mat-error
+              *ngIf="availabilityForm.get('StartDate')?.hasError('required')"
+              >Start date is required</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>End Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="endPicker"
+              formControlName="EndDate"
+              required
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="endPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+            <mat-error
+              *ngIf="availabilityForm.get('EndDate')?.hasError('required')"
+              >End date is required</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Timeslots (comma-separated)</mat-label>
+            <input
+              matInput
+              formControlName="Timeslots"
+              placeholder="e.g. 09:00-10:00, 10:00-11:00"
+              required
+            />
+            <mat-error
+              *ngIf="availabilityForm.get('Timeslots')?.hasError('required')"
+              >Timeslots are required</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              formControlName="Description"
+              rows="2"
+            ></textarea>
+          </mat-form-field>
+          <!-- Submit Button -->
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="availabilityForm.invalid"
+          >
+            Add Availability
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <div class="submitted-list" *ngIf="submittedAvailabilities.length">
+      <h3>Submitted Availabilities</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let avail of submittedAvailabilities">
+          <div>
+            <strong
+              >{{ avail.StartDate | date : "shortDate" }} -
+              {{ avail.EndDate | date : "shortDate" }}</strong
+            ><br />
+            <span>Timeslots: {{ avail.Timeslots.join(", ") }}</span
+            ><br />
+            <span *ngIf="avail.Description"
+              >Description: {{ avail.Description }}</span
+            >
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</div>

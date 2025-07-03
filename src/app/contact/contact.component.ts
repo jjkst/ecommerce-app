@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MaterialModule } from '../material.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { EmailService } from '../services/email.service';
+import { Contact } from '../models/contact.model';
 
 @Component({
   selector: 'app-contact',
@@ -21,7 +23,10 @@ export class ContactComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private emailService: EmailService
+  ) {}
 
   ngOnInit(): void {
     this.contactForm = this.fb.group({
@@ -33,18 +38,42 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.successMessage = '';
     this.errorMessage = '';
     if (this.contactForm.valid) {
       this.loading = true;
-      // Simulate async submission (replace with real API call)
-      setTimeout(() => { 
+
+      try {
+        const formValue = this.contactForm.value;
+        const contactData: Contact = {
+          FirstName: formValue.firstName,
+          LastName: formValue.lastName,
+          Email: formValue.email,
+          PhoneNumber: formValue.phoneNumber,
+          Questions: formValue.questions
+        };
+
+        // Validate data before submission
+        if (!this.emailService.validateContactData(contactData)) {
+          throw new Error('Please fill in all required fields correctly.');
+        }
+
+        const response = await this.emailService.sendEmail(contactData);
+        if (response.status === 200 || response.status === 201) {
+          this.successMessage = 'Your message has been sent successfully!';
+        } else {
+          this.errorMessage = 'Sorry error sending email reported to the support team.'
+          console.error('Error sending email:', response);
+        }
+      } catch (error) {
+        this.errorMessage = 'Sorry error sending email reported to the support team.'
+        console.error('Error sending email:', error);
+      } finally {
         this.loading = false;
-        this.successMessage = 'Your message has been sent successfully!';
-        this.contactForm.reset();
-      }, 1500);
+      }
     } else {
+      this.contactForm.markAllAsTouched();
       this.errorMessage = 'Please fill in all required fields correctly.';
     }
   }
