@@ -60,30 +60,35 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   private loadMockServices(): void {
     this.services = [
       { 
+        Id: 0,
         Title: 'Photo Shoot', 
         Description: 'Professional photography services',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
         Price: 1200 
       },
       { 
+        Id: 0,
         Title: 'Video Shoot', 
         Description: 'High-quality video production',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
         Price: 2500 
       },
       { 
+        Id: 0,
         Title: 'Wedding Ceremony', 
         Description: 'Complete wedding photography package',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
         Price: 3500 
       },
       { 
+        Id: 0,
         Title: 'Event Filming', 
         Description: 'Professional event videography',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
         Price: 1800 
       },
       { 
+        Id: 0,
         Title: 'Portrait Session', 
         Description: 'Individual and family portraits',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 

@@ -1,9 +1,4 @@
-.content {
-  width: 80%; /* Ensure content spans full width */
-  max-width: 800px; /* Optional: Limit the max width of the card */
-  margin-top: 20px; /* Add spacing between toolbar and card */
-  padding: 20px;
-}
+// Start Add Product/Service Section
 
 .service-manager-card {
   max-width: 700px;
@@ -11,6 +6,32 @@
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+mat-card {
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: none; /* Remove the border */
+  box-shadow: none;
+  background-color: white;
+}
+
+mat-card-title {
+  font-size: 24px;
+  text-align: center;
+  margin: 20px;
+}
+
+.mat-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mat-card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .full-width {
@@ -23,15 +44,6 @@ button[type="submit"] {
   padding: 12px 0;
   font-size: 18px;
   border-radius: 8px;
-}
-
-mat-card-header {
-  font-size: 24px;
-  margin-bottom: 20px;
-  margin-left: 15%;
-  text-align: center;
-  font-weight: bold;
-  color: #3f51b5; /* Primary color */
 }
 
 mat-card-content {
@@ -57,3 +69,4 @@ mat-card-content {
     margin-left: 0.25em;
   }
 }
+

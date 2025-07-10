@@ -1,14 +1,32 @@
 <div class="main-container">
+  
+  <div class="title-section" *ngIf="services && services.length > 0">
+    <h1>Manage Product/Service</h1>
+  </div>
+  
+  <app-horizontal-card-list
+  [items]="services"
+  [itemsPerPage]="3"
+  [contentTemplate]="serviceContentTemplate"
+  [getImageUrl]="getServiceImageUrl"
+  [getTitle]="getServiceTitle"
+  [showImage]="true"
+  (edit)="editService($event)"
+  (delete)="deleteService($event)"
+>
+</app-horizontal-card-list>
+
+<ng-template #serviceContentTemplate let-service>
+</ng-template>
+
   <div class="title-section">
     <h1>Add Your Product/Service</h1>
   </div>
-  <div class="content">
+
+  <div class="add-service-section">
+
     <mat-card class="service-manager-card">
-      <!-- Feedback Messages -->
-      <div *ngIf="successMessage" class="success-message">
-        {{ successMessage }}
-      </div>
-      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <!-- Loading Spinner -->
       <div *ngIf="loading" class="loading-spinner">
         <mat-spinner diameter="40"></mat-spinner>
       </div>
@@ -85,10 +103,11 @@
             type="submit"
             [disabled]="serviceForm.invalid"
           >
-            Add Service
+            {{ formbuttonText }}
           </button>
         </form>
       </mat-card-content>
     </mat-card>
   </div>
+
 </div>

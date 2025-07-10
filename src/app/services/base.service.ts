@@ -138,17 +138,6 @@ export abstract class BaseService {
   }
 
   /**
-   * Utility method to create FormData for file uploads
-   */
-  protected createFormData(data: any): FormData {
-    const formData = new FormData();
-    Object.keys(data).forEach(key => {
-      formData.append(key, data[key]);
-    });
-    return formData;
-  }
-
-  /**
    * Utility method to validate required fields
    */
   protected validateRequiredFields(data: any, requiredFields: string[]): boolean {

@@ -9,7 +9,9 @@ export class ImageUploadService extends BaseService {
   private readonly endpoint = '/uploadimage';
 
   async uploadImage(file: File): Promise<HttpResponse<any>> {
-    const formData = this.createFormData({ file });
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', '/Users/karthikjayaraman/code/ecommerce-app/public');
     return await this.post<any>(this.endpoint, formData);
   }
 

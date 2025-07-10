@@ -12,14 +12,12 @@ import { AvailabilityManagerComponent } from './availability-manager/availabilit
 import { LoginComponent } from './login/login.component';
 
 
-
-
-
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'about', component: AboutComponent },
     { path: 'contact', component: ContactComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'admin', component: ServiceManagerComponent },
     { path: 'admin/manage-services', component: ServiceManagerComponent },
     { path: 'admin/manage-availability', component: AvailabilityManagerComponent },
     { path: 'products/:id', component: ProductDetailComponent },

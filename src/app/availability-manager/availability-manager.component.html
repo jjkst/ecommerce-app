@@ -1,14 +1,33 @@
 <div class="main-container">
-  <div class="title-section">
-    <h1>Add Your Availabilities</h1>
+  <div class="title-section" *ngIf="availabilities && availabilities.length > 0">
+    <h1>Manage Availabilities</h1>
   </div>
+
+  <app-horizontal-card-list
+  [items]="availabilities"
+  [itemsPerPage]="3"
+  [contentTemplate]="availabilityContentTemplate"
+  [getImageUrl]="getAvailabilityImageUrl"
+  [getTitle]="getAvailabilityTitle"
+  [showImage]="false"
+  (edit)="editAvailability($event)"
+  (delete)="deleteAvailability($event)">
+</app-horizontal-card-list>
+
+<ng-template #availabilityContentTemplate let-availability>
+  <!-- Availability content information -->
+  <p><strong>Start Date:</strong> {{ availability.StartDate | date:'mediumDate' }}</p>
+  <p><strong>End Date:</strong> {{ availability.EndDate | date:'mediumDate' }}</p>
+  <p><strong>Timeslots:</strong> {{ availability.Timeslots.join(', ') }}</p>
+  <p><strong>Services:</strong> {{ availability.Services.join(', ') }}</p>
+</ng-template>
+
   <div class="content">
-    <mat-card class="service-manager-card">
-      <!-- Feedback Messages -->
-      <div *ngIf="successMessage" class="success-message">
-        {{ successMessage }}
-      </div>
-      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div class="title-section">
+      <h1>Add Availability</h1>
+    </div>
+    <mat-card class="availability-manager-card">
+      <!-- Loading Spinner -->
       <div *ngIf="loading" class="loading-spinner">
         <mat-spinner diameter="40"></mat-spinner>
       </div>
@@ -53,28 +72,42 @@
             >
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Timeslots (comma-separated)</mat-label>
-            <input
-              matInput
-              formControlName="Timeslots"
-              placeholder="e.g. 09:00-10:00, 10:00-11:00"
-              required
-            />
-            <mat-error
-              *ngIf="availabilityForm.get('Timeslots')?.hasError('required')"
-              >Timeslots are required</mat-error
+          <!-- Services Grid -->
+          <mat-label>Services*</mat-label>
+          <div class="services-grid">
+            <button
+              mat-raised-button
+              *ngFor="let service of allServices"
+              [color]="isServiceSelected(service) ? 'primary' : ''"
+              (click)="toggleService(service)"
+              [class.selected]="isServiceSelected(service)"
+              type="button"
             >
-          </mat-form-field>
+              {{ service }}
+            </button>
+          </div>
+          <mat-error *ngIf="availabilityForm.get('Services')?.hasError('required')">
+            At least one service is required
+          </mat-error>
 
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Description</mat-label>
-            <textarea
-              matInput
-              formControlName="Description"
-              rows="2"
-            ></textarea>
-          </mat-form-field>
+          <!-- Timeslot Grid -->
+          <mat-label>Timeslots*</mat-label>
+          <div class="timeslot-grid">
+            <button
+              mat-raised-button
+              *ngFor="let slot of allTimeslots"
+              [color]="isSelected(slot) ? 'primary' : ''"
+              (click)="toggleTimeslot(slot)"
+              [class.selected]="isSelected(slot)"
+              type="button"
+            >
+              {{ slot }}
+            </button>
+          </div>
+          <mat-error *ngIf="availabilityForm.get('Timeslots')?.hasError('required')">
+            At least one timeslot is required
+          </mat-error>
+
           <!-- Submit Button -->
           <button
             mat-raised-button
@@ -82,28 +115,10 @@
             type="submit"
             [disabled]="availabilityForm.invalid"
           >
-            Add Availability
+            {{ formbuttonText }}
           </button>
         </form>
       </mat-card-content>
     </mat-card>
-    <div class="submitted-list" *ngIf="submittedAvailabilities.length">
-      <h3>Submitted Availabilities</h3>
-      <mat-list>
-        <mat-list-item *ngFor="let avail of submittedAvailabilities">
-          <div>
-            <strong
-              >{{ avail.StartDate | date : "shortDate" }} -
-              {{ avail.EndDate | date : "shortDate" }}</strong
-            ><br />
-            <span>Timeslots: {{ avail.Timeslots.join(", ") }}</span
-            ><br />
-            <span *ngIf="avail.Description"
-              >Description: {{ avail.Description }}</span
-            >
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </div>
   </div>
 </div>

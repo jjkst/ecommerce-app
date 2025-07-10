@@ -36,10 +36,30 @@
     }
   }
 
-  .company-name {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: white;
+  .mobile-branding {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .branding-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .company-name {
+      font-size: 1em;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+    }
   }
 
   .nav-links {
@@ -99,22 +119,31 @@
 
   .company-branding {
     display: flex;
-    margin: 10px;
     a {
       text-decoration: none;
       margin-left: 20px;
-      display: block;
+      display: flex;
+      align-items: center;
+
+      .branding-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .logo {
+        width: 80px;
+        height: auto;
+        margin: 0;
+      }
 
       span.title {
-          font-size: 1.5em;
-          font-weight: bold;
-          color: black; /* Primary text color */
-      }
-      span.subtitle {
           font-size: 1em;
-          justify-content: flex-end; 
-          color: #6c757d; /* Secondary text color */
-        }
+          font-weight: 500;
+          font-style: italic;
+          color: black; /* Primary text color */
+          text-align: center;
+      }
     }
   }
 

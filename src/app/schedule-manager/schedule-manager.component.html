@@ -1,19 +1,60 @@
-<div class="appointment-container">
-  <mat-toolbar [style.backgroundColor]="dynamicBackgroundColor">
-    <span class="toolbar-spacer"></span><span>{{ toolbarTitle }}</span>
-    <span class="toolbar-spacer"></span>
-  </mat-toolbar>
-  <div class="content">
-    <mat-card class="appointment-card">
-      <mat-card-header>
-        <mat-card-title>Schedule Your Appointment</mat-card-title>
-      </mat-card-header>
+<div class="main-container">
+  <div class="title-section" *ngIf="scheduledAppointments && scheduledAppointments.length > 0">
+    <h1>Manage Schedules</h1>
+  </div>
+
+  <app-horizontal-card-list
+    [items]="scheduledAppointments"
+    [itemsPerPage]="3"
+    [contentTemplate]="scheduleContentTemplate"
+    [getImageUrl]="getScheduleImageUrl"
+    [getTitle]="getScheduleTitle"
+    [showImage]="false"
+    (edit)="editSchedule($event)"
+    (delete)="deleteSchedule($event)">
+  </app-horizontal-card-list>
+
+  <ng-template #scheduleContentTemplate let-schedule>
+    <!-- Schedule content information -->
+    <p><strong>Contact:</strong> {{ schedule.ContactName }}</p>
+    <p><strong>Service:</strong> {{ schedule.Service }}</p>
+    <p><strong>Date:</strong> {{ schedule.SelectedDate | date:'mediumDate' }}</p>
+    <p><strong>Time:</strong> {{ schedule.Timeslot }}</p>
+    <p *ngIf="schedule.Note"><strong>Note:</strong> {{ schedule.Note }}</p>
+  </ng-template>
+
+  <div class="title-section">
+    <h1>Add Your Schedule</h1>
+  </div>
+
+  <div class="add-schedule-section">
+    <mat-card class="schedule-manager-card">
+      <!-- Loading Spinner -->
+      <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
       <mat-card-content>
         <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
-          <!-- Service Selection -->
+          <!-- Contact Name Input -->
           <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Contact Name</mat-label>
+            <input
+              matInput
+              formControlName="ContactName"
+              placeholder="Enter contact name"
+            />
+            <mat-error
+              *ngIf="appointmentForm.get('ContactName')?.hasError('required')"
+            >
+              Contact name is required
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Service Selection -->
+          <!-- <mat-form-field appearance="fill" class="full-width">
             <mat-label>Select a service</mat-label>
-            <mat-select formControlName="selectedService">
+            <mat-select formControlName="Service">
               <mat-option
                 *ngFor="let service of availableServices"
                 [value]="service"
@@ -22,13 +63,11 @@
               </mat-option>
             </mat-select>
             <mat-error
-              *ngIf="
-                appointmentForm.controls['selectedService'].hasError('required')
-              "
+              *ngIf="appointmentForm.get('Service')?.hasError('required')"
             >
               Service is required
             </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
 
           <!-- Date Picker -->
           <mat-form-field appearance="fill" class="full-width">
@@ -36,7 +75,7 @@
             <input
               matInput
               [matDatepicker]="picker"
-              formControlName="selectedDate"
+              formControlName="SelectedDate"
               (dateInput)="onDateChange()"
               (dateChange)="onDateChange()"
             />
@@ -47,18 +86,16 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error
-              *ngIf="
-                appointmentForm.controls['selectedDate'].hasError('required')
-              "
+              *ngIf="appointmentForm.get('SelectedDate')?.hasError('required')"
             >
               Date is required
             </mat-error>
           </mat-form-field>
 
           <!-- Time Slot Selection -->
-          <mat-form-field appearance="fill" class="full-width">
+          <!-- <mat-form-field appearance="fill" class="full-width">
             <mat-label>Select a time slot</mat-label>
-            <mat-select formControlName="selectedTimeSlot">
+            <mat-select formControlName="Timeslot">
               <mat-option *ngIf="availableTimeSlots.length === 0" disabled>
                 No slots available for this date.
               </mat-option>
@@ -70,58 +107,33 @@
               </mat-option>
             </mat-select>
             <mat-error
-              *ngIf="
-                appointmentForm.controls['selectedTimeSlot'].hasError(
-                  'required'
-                )
-              "
+              *ngIf="appointmentForm.get('Timeslot')?.hasError('required')"
             >
               Time slot is required
             </mat-error>
+          </mat-form-field> -->
+
+          <!-- Note Input -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Note (Optional)</mat-label>
+            <textarea
+              matInput
+              formControlName="Note"
+              placeholder="Enter any additional notes"
+              rows="3"
+            ></textarea>
           </mat-form-field>
 
+          <!-- Submit Button -->
           <button
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="
-              appointmentForm.invalid || scheduledAppointments.length >= 4
-            "
+            [disabled]="appointmentForm.invalid"
           >
-            Confirm Appointment
+            {{ formbuttonText }}
           </button>
         </form>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Scheduled Appointments Section -->
-    <mat-card class="appointment-card" *ngIf="scheduledAppointments.length > 0">
-      <mat-card-header>
-        <mat-card-title>Scheduled Appointments</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div
-          *ngFor="let appointment of scheduledAppointments; let i = index"
-          class="scheduled-appointment"
-        >
-          <p><strong>Service:</strong> {{ appointment.Service }}</p>
-          <p>
-            <strong>Date:</strong> {{ appointment.SelectedDate| date : "mediumDate" }}
-          </p>
-          <p><strong>Time:</strong> {{ appointment.Timeslot }}</p>
-          <p *ngIf="appointment.Note">
-            <strong>Description:</strong> {{ appointment.Note }}
-          </p>
-          <div class="appointment-actions">
-            <button mat-button color="primary" (click)="editAppointment(scheduledAppointments[i])">
-              Edit
-            </button>
-            <button mat-button color="warn" (click)="deleteAppointment(scheduledAppointments[i])">
-              Delete
-            </button>
-          </div>
-          <div class="separator"></div>
-        </div>
       </mat-card-content>
     </mat-card>
   </div>

@@ -4,7 +4,12 @@
     <div class="bar"></div>
     <div class="bar"></div>
   </div>
-  <div class="company-name">Nic Taylor</div>
+  <div class="mobile-branding">
+    <div class="branding-content">
+      <img src="assets/ruku-logo-rmbk.png" alt="Ruku IT Services Logo" class="logo">
+      <div class="company-name">Ruku IT Services</div>
+    </div>
+  </div>
   <div class="company">photography</div>
   <nav class="nav-links" [ngClass]="{'open': isMenuOpen}">
     <ul>
@@ -28,8 +33,10 @@
 <div class="desktop-nav">
   <div class="company-branding">
     <a routerLink="/" >
-      <span class="title">Nic Taylor Photography</span> <br>
-      <span class="subtitle">Capture Your Moments</span>
+      <div class="branding-content">
+        <img src="assets/ruku-logo-rmbk.png" alt="Ruku IT Services Logo" class="logo">
+        <span class="title">Ruku IT Services</span>
+      </div>
     </a>
   </div>
 
@@ -41,7 +48,7 @@
       <li><a routerLink="/cart" routerLinkActive="active">Cart</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active">Schedule</a></li>
       <li class="has-submenu" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false">
-        <a [routerLink]="['/admin']" routerLinkActive="active" (click)="toggleSubMenu()">Admin</a>
+        <a (click)="toggleSubMenu()">Admin</a>
         <ul *ngIf="isSubMenuOpen" class="submenu">
           <li><a routerLink="/admin/manage-services" routerLinkActive="active">Manage Services</a></li>
           <li><a routerLink="/admin/manage-availability" routerLinkActive="active">Manage Availability</a></li>

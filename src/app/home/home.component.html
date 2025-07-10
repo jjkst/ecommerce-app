@@ -1,42 +1,73 @@
-
 <!-- Video Player -->
-<div class="video-container">
-    <video controls autoplay muted class="video-player">
-      <source src="assets/SampleVideo.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  </div>
-  
-  <h1>Our Services</h1>
-  <p>Explore our range of photography services designed to capture your special moments.</p>
-  
-  <div class="card-grid">
-    
-    <mat-card *ngFor="let product of services" class="mat-card" (click)="viewDetails(product)">
-      <img mat-card-image [src]="product.FileName"  alt="{{ product.Title }}" />
-      <mat-card-title>{{ product.Title }}</mat-card-title>
+<!-- <div class="video-container">
+  <video controls autoplay muted class="video-player">
+    <source src="assets/SampleVideo.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div> -->
+
+<div class="ruku-services">
+  <img src="assets/rukuservices.png" alt="ruku-services" />
+</div>
+
+<h1>Our Services</h1>
+<p>
+  Explore our range of photography services designed to capture your special
+  moments.
+</p>
+
+<div class="card-grid">
+    <mat-card class="mat-card">
+      <img mat-card-image src="assets/ruku-uiautomation.png" alt="website" />
+      <mat-card-title>Build Regression Suite</mat-card-title>
     </mat-card>
-  
+    <mat-card class="mat-card">
+      <img mat-card-image src="assets/ruku-website.png" alt="website" />
+      <mat-card-title>Build Your Website</mat-card-title>
+    </mat-card>
+    <mat-card class="mat-card">
+      <img mat-card-image src="assets/ruku-teachinguiautomation.png" alt="website" />
+      <mat-card-title>Learn UI Automation</mat-card-title>
+    </mat-card>
+</div>
+
+<div class="card-grid">
+  <mat-card
+    *ngFor="let product of services"
+    class="mat-card"
+    (click)="viewDetails(product)"
+  >
+    <img mat-card-image [src]="product.FileName" alt="{{ product.Title }}" />
+    <mat-card-title>{{ product.Title }}</mat-card-title>
+  </mat-card>
+</div>
+
+<div class="testimony-section">
+  <h2>What Our Clients Say</h2>
+  <div class="testimony">
+    <p>
+      "Nic Taylor Photography captured the most beautiful moments of our
+      wedding. Highly recommend!"
+    </p>
+    <span>- Sarah & John</span>
   </div>
-  
-  <div class="testimony-section">
-    <h2>What Our Clients Say</h2>
-    <div class="testimony">
-      <p>"Nic Taylor Photography captured the most beautiful moments of our wedding. Highly recommend!"</p>
-      <span>- Sarah & John</span>
-    </div>
-    <div class="testimony">
-      <p>"The team was professional and made us feel comfortable during the shoot. The photos turned out amazing!"</p>
-      <span>- Emily R.</span>
-    </div>
-    <div class="testimony">
-      <p>"Great experience! The outdoor shoot was stunning, and the team was very accommodating."</p>
-      <span>- Michael T.</span>
-    </div>
+  <div class="testimony">
+    <p>
+      "The team was professional and made us feel comfortable during the shoot.
+      The photos turned out amazing!"
+    </p>
+    <span>- Emily R.</span>
   </div>
-  
-  
-  <!-- <mat-card-actions>
+  <div class="testimony">
+    <p>
+      "Great experience! The outdoor shoot was stunning, and the team was very
+      accommodating."
+    </p>
+    <span>- Michael T.</span>
+  </div>
+</div>
+
+<!-- <mat-card-actions>
     <button mat-raised-button color="primary" (click)="addToCart(product); $event.stopPropagation()">
       Add to Cart
     </button>

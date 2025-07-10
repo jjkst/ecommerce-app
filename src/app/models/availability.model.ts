@@ -1,7 +1,8 @@
 
 export interface Availability {
+    Id?: number;
     StartDate: Date;
     EndDate: Date;
     Timeslots: string[];
-    Description?: string;
+    Services: string[];
   }
