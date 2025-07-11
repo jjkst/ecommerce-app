@@ -13,6 +13,23 @@ export class AvailabilityService extends BaseService {
     return await this.get<Availability[]>(this.endpoint);
   }
 
+  async getAvailableDates(): Promise<HttpResponse<any[]>> {
+    return await this.get<Availability[]>(this.endpoint + '/dates');
+  }
+
+  async getAvailableServicesByDate(date: Date): Promise<HttpResponse<any[]>> {
+    var datestring = date.toISOString().slice(0, 10);
+    return await this.get<Availability[]>(this.endpoint + `/services?date=${datestring}`);
+  }
+
+  async postAvailableTimeslotsByDateByServices(date: Date, services: string[]): Promise<HttpResponse<any[]>> {
+    var request = {
+      "date": date,
+      "services": services
+    }
+    return await this.post<any>(this.endpoint + '/timeslots', request);
+  }
+
   async addAvailability(availabilityData: Availability): Promise<HttpResponse<Availability>> {
     return await this.post<Availability>(this.endpoint, availabilityData);
   }

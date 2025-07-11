@@ -71,3 +71,55 @@ mat-card-content {
     margin-left: 0.25em;
   }
 }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 150px));
+  gap: 8px;
+  margin: 1rem 1rem;
+
+  .services-label {
+    font-size: 14px;
+  }
+
+  // Stronger selector for Angular Material buttons
+  button,
+  .mat-raised-button,
+  ::ng-deep .mat-raised-button {
+    font-size: 12px !important;
+    min-width: 0 !important;
+    padding: 8px 4px !important;
+  }
+
+  button.selected {
+    background-color: #1976d2 !important;
+    color: #fff !important;
+  }
+}
+.no-services-label {
+  color: #f44336;
+  font-size: 14px;
+  margin: 8px 0;
+  text-align: center;
+}
+
+.timeslot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 150px));
+  gap: 8px;
+  margin: 1rem 1rem;
+
+  // Stronger selector for Angular Material buttons
+  button,
+  .mat-raised-button,
+  ::ng-deep .mat-raised-button {
+    font-size: 12px !important;
+    min-width: 0 !important;
+    padding: 4px 0 !important;
+  }
+
+  button.selected {
+    background-color: #1976d2 !important;
+    color: #fff !important;
+  }
+}

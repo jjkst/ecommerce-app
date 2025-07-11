@@ -40,6 +40,8 @@ export abstract class BaseService {
    */
   protected async post<T>(endpoint: string, data: any, options?: any): Promise<HttpResponse<T>> {
     try {
+      console.log('post route:', `${this.apiBaseUrl}${endpoint}`);
+
       const response = await lastValueFrom(
         this.http.post<T>(`${this.apiBaseUrl}${endpoint}`, data, { 
           observe: 'response',
@@ -48,7 +50,6 @@ export abstract class BaseService {
           catchError(this.handleError)
         )
       );
-      
       if (response instanceof HttpResponse) {
         this.logResponse('POST', endpoint, response.status);
         return response;

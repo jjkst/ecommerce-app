@@ -50,25 +50,7 @@
               Contact name is required
             </mat-error>
           </mat-form-field>
-
-          <!-- Service Selection -->
-          <!-- <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Select a service</mat-label>
-            <mat-select formControlName="Service">
-              <mat-option
-                *ngFor="let service of availableServices"
-                [value]="service"
-              >
-                {{ service }}
-              </mat-option>
-            </mat-select>
-            <mat-error
-              *ngIf="appointmentForm.get('Service')?.hasError('required')"
-            >
-              Service is required
-            </mat-error>
-          </mat-form-field> -->
-
+          
           <!-- Date Picker -->
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>Choose a date</mat-label>
@@ -76,8 +58,7 @@
               matInput
               [matDatepicker]="picker"
               formControlName="SelectedDate"
-              (dateInput)="onDateChange()"
-              (dateChange)="onDateChange()"
+              [matDatepickerFilter]="dateFilter"
             />
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle
@@ -92,26 +73,41 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Time Slot Selection -->
-          <!-- <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Select a time slot</mat-label>
-            <mat-select formControlName="Timeslot">
-              <mat-option *ngIf="availableTimeSlots.length === 0" disabled>
-                No slots available for this date.
-              </mat-option>
-              <mat-option
-                *ngFor="let slot of availableTimeSlots"
-                [value]="slot"
-              >
-                {{ slot }}
-              </mat-option>
-            </mat-select>
-            <mat-error
-              *ngIf="appointmentForm.get('Timeslot')?.hasError('required')"
+        <!-- Services Grid -->
+        <mat-label>Services*</mat-label>
+        <div class="services-grid">
+            <button
+              mat-raised-button
+              *ngFor="let service of availableServices"
+              [color]="isServiceSelected(service) ? 'primary' : ''"
+              (click)="toggleService(service)"
+              [class.selected]="isServiceSelected(service)"
+              type="button"
             >
-              Time slot is required
-            </mat-error>
-          </mat-form-field> -->
+              {{ service }}
+            </button>
+        </div>
+        <mat-error *ngIf="appointmentForm.get('Services')?.hasError('required')">
+          At least one service is required
+        </mat-error>
+
+        <!-- Timeslot Grid -->
+        <mat-label>Timeslots*</mat-label>
+        <div class="timeslot-grid">
+          <button
+            mat-raised-button
+            *ngFor="let slot of availableTimeSlots"
+            [color]="isSlotSelected(slot) ? 'primary' : ''"
+            (click)="toggleTimeslot(slot)"
+            [class.selected]="isSlotSelected(slot)"
+            type="button"
+          >
+            {{ slot }}
+          </button>
+        </div>
+        <mat-error *ngIf="appointmentForm.get('Timeslots')?.hasError('required')">
+          At least one timeslot is required
+        </mat-error>
 
           <!-- Note Input -->
           <mat-form-field appearance="fill" class="full-width">

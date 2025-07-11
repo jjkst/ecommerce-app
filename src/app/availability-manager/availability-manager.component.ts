@@ -6,12 +6,14 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MaterialModule } from '../material.module';
 import { Availability } from '../models/availability.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HorizontalCardListComponent } from '../shared/horizontal-card-list.component';
 import { AvailabilityService } from '../services/availability.service';
+import { ProductService } from '../services/product.service';
+import { Service } from '../models';
 
 @Component({
   selector: 'app-availability-manager',
@@ -35,12 +37,13 @@ export class AvailabilityManagerComponent implements OnInit, OnDestroy {
   formbuttonText = 'Add Availability';
 
   allTimeslots: string[] = [];
-  allServices: string[] = ['Photography', 'Videography', 'Event Planning', 'Portrait Session', 'Wedding Coverage', 'Corporate Events'];
+  allServices: Service[] = [];
 
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private availabilityService: AvailabilityService
+    private availabilityService: AvailabilityService,
+    private productService: ProductService,
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +55,7 @@ export class AvailabilityManagerComponent implements OnInit, OnDestroy {
       Services: [[], Validators.required],
     });
     this.loadAvailabilities();
+    this.loadServices();
   }
 
   ngOnDestroy(): void {
@@ -179,6 +183,7 @@ export class AvailabilityManagerComponent implements OnInit, OnDestroy {
         console.error('Error adding Availability:', error);
       } finally {
         this.loading = false;
+        this.availabilityForm.reset();
       }
     } else {
       this.availabilityForm.markAllAsTouched();
@@ -288,5 +293,24 @@ export class AvailabilityManagerComponent implements OnInit, OnDestroy {
       ? new Date(availability.EndDate).toLocaleDateString()
       : 'No end date';
     return `${startDate} - ${endDate}`;
+  }
+
+  private async loadServices(): Promise<void> {
+    try {
+      const response = await this.productService.getServices();
+      if (response.status === 200 && Array.isArray(response.body)) {
+        this.allServices =
+          response.body.map((service) => ({
+            Id: service.id,
+            Title: service.title,
+            Description: service.description,
+            Price: service.price,
+            FileName: service.fileName,
+          })) || [];
+      }
+    } catch (error) {
+      console.error('Error loading services:', error);
+      this.showToast('Error loading existing services', 'error');
+    }
   }
 }

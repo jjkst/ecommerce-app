@@ -5,7 +5,7 @@
 
   <app-horizontal-card-list
   [items]="availabilities"
-  [itemsPerPage]="3"
+  [itemsPerPage]="2"
   [contentTemplate]="availabilityContentTemplate"
   [getImageUrl]="getAvailabilityImageUrl"
   [getTitle]="getAvailabilityTitle"
@@ -78,12 +78,12 @@
             <button
               mat-raised-button
               *ngFor="let service of allServices"
-              [color]="isServiceSelected(service) ? 'primary' : ''"
-              (click)="toggleService(service)"
-              [class.selected]="isServiceSelected(service)"
+              [color]="isServiceSelected(service.Title) ? 'primary' : ''"
+              (click)="toggleService(service.Title)"
+              [class.selected]="isServiceSelected(service.Title)"
               type="button"
             >
-              {{ service }}
+              {{ service.Title }}
             </button>
           </div>
           <mat-error *ngIf="availabilityForm.get('Services')?.hasError('required')">

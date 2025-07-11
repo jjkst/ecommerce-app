@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ScheduleService } from '../services/schedule.service';
 import { Schedule } from '../models/schedule.model';
 import { MaterialModule } from '../material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HorizontalCardListComponent } from '../shared/horizontal-card-list.component';
+import { AvailabilityService } from '../services/availability.service';
 
 @Component({
   selector: 'app-schedule-manager',
@@ -22,8 +23,9 @@ import { HorizontalCardListComponent } from '../shared/horizontal-card-list.comp
 })
 export class ScheduleManagerComponent implements OnInit, OnDestroy {
   appointmentForm!: FormGroup;
+  availableDates: Date[] = [];
   availableTimeSlots: string[] = [];
-  availableServices: string[] = ['Photography', 'Videography', 'Event Planning'];
+  availableServices: string[] = [];
   scheduledAppointments: Schedule[] = [];
   loading = false;
   formId = 0;
@@ -33,12 +35,30 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private scheduleService: ScheduleService,
+    private availabilityService: AvailabilityService,
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {
+  // ------------------- Utility Methods -------------------
+  private formatDateToYMD(date: Date): string {
+    return date.toISOString().slice(0, 10);
+  }
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) return false;
+    const ymd = this.formatDateToYMD(date);
+    return this.availableDates.some(d => this.formatDateToYMD(new Date(d)) === ymd);
+  };
+
+  private generateUid(): string {
+    return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+  }
+
+  // ------------------- Data Loading Methods -------------------
+  async ngOnInit(): Promise<void> {
     this.initializeForm();
-    this.loadSchedules();
+    await this.loadSchedules();
+    await this.loadAvailableDates();
     this.setupFormSubscriptions();
   }
 
@@ -50,9 +70,9 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   private initializeForm(): void {
     this.appointmentForm = this.fb.group({
       ContactName: ['', Validators.required],
-      Service: ['', Validators.required],
+      Services: [[]],
       SelectedDate: [null, Validators.required],
-      Timeslot: [{ value: null, disabled: true }, Validators.required],
+      Timeslots: [[], Validators.required],
       Note: [''],
       Uid: ['']
     });
@@ -60,18 +80,19 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
 
   private setupFormSubscriptions(): void {
     this.appointmentForm.get('SelectedDate')?.valueChanges.subscribe((date: Date | null) => {
-      this.populateTimeSlots(date);
+      this.onDateChange();
+    });
+    this.appointmentForm.get('Services')?.valueChanges.subscribe((services: string[]) => {
+      this.onServiceChange();
     });
   }
 
   async loadSchedules(): Promise<void> {
     this.loading = true;
-
     try {
       const response = await this.scheduleService.getSchedules();
       if (response.status === 200 && Array.isArray(response.body)) {
         this.scheduledAppointments = response.body || [];
-        console.log('Schedules loaded:', this.scheduledAppointments);
       }
     } catch (error) {
       console.error('Error loading schedules:', error);
@@ -81,67 +102,133 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDateChange(): void {
-    this.appointmentForm.get('Timeslot')?.setValue(null);
-  }
-
-  private populateTimeSlots(date: Date | null): void {
-    this.availableTimeSlots = [];
-    
-    if (date) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const selectedDateNormalized = new Date(date);
-      selectedDateNormalized.setHours(0, 0, 0, 0);
-
-      if (selectedDateNormalized.getTime() === today.getTime()) {
-        // For today, offer slots from now onwards
-        const currentHour = new Date().getHours();
-        for (let i = currentHour + 1; i < 18; i++) {
-          this.availableTimeSlots.push(`${i}:00 - ${i}:30`);
-          this.availableTimeSlots.push(`${i}:30 - ${i + 1}:00`);
-        }
-      } else if (selectedDateNormalized.getTime() > today.getTime()) {
-        // For future dates, offer a full day of slots
-        for (let i = 9; i < 17; i++) {
-          this.availableTimeSlots.push(`${i}:00 - ${i}:30`);
-          this.availableTimeSlots.push(`${i}:30 - ${i + 1}:00`);
-        }
+  async loadAvailableDates(): Promise<void> {
+    this.loading = true;
+    try {
+      const response = await this.availabilityService.getAvailableDates();
+      if (response.status === 200 && Array.isArray(response.body)) {
+        this.availableDates = response.body || [];
       }
-
-      if (this.availableTimeSlots.length > 0) {
-        this.appointmentForm.get('Timeslot')?.enable();
-      } else {
-        this.appointmentForm.get('Timeslot')?.disable();
-      }
-    } else {
-      this.appointmentForm.get('Timeslot')?.disable();
+    } catch (error) {
+      console.error('Error loading availabilities:', error);
+      this.showToast('Error loading existing availabilities', 'error');
+    } finally {
+      this.loading = false;
     }
   }
 
+  async loadServices(date?: Date): Promise<void> {
+    try {
+      if (!date) {
+        this.availableServices = [];
+        return;
+      }
+      const response = await this.availabilityService.getAvailableServicesByDate(date);
+      if (response.status === 200 && Array.isArray(response.body)) {
+        this.availableServices = response.body;
+      } else {
+        this.availableServices = [];
+      }
+    } catch (error) {
+        console.error('Error loading services:', error);
+        this.showToast('Error loading available services for date', 'error');
+    }
+  }
+
+  async loadTimeSlots(date: Date, services: string[]): Promise<void> {
+    if (!date || !services || services.length === 0) {
+      this.availableTimeSlots = [];
+      return;
+    }
+    try {
+      const response = await this.availabilityService.postAvailableTimeslotsByDateByServices(date, services);
+      console.log('loaded services:', response.body);
+      if (response.status === 200 && Array.isArray(response.body)) {
+        this.availableTimeSlots = response.body;
+      } else {
+        this.availableTimeSlots = [];
+      }
+    } catch (error) {
+      this.availableTimeSlots = [];
+      this.showToast('Error loading available timeslots for date and services', 'error');
+    }
+  }
+
+  // ------------------- Form Event Handlers -------------------
+  onDateChange(): void {
+    const selectedDate = this.appointmentForm.get('SelectedDate')?.value;
+    this.appointmentForm.get('Services')?.setValue([]);
+    this.appointmentForm.get('Timeslots')?.setValue([]);
+    this.loadServices(selectedDate);
+  }
+
+  onServiceChange(): void {
+    const selectedDate = this.appointmentForm.get('SelectedDate')?.value;
+    const selectedServices = this.appointmentForm.get('Services')?.value || [];
+    this.loadTimeSlots(selectedDate, selectedServices);
+  }
+
+  // ------------------- UI Helpers -------------------
+  isServiceSelected(service: string): boolean {
+    if (!this.appointmentForm) return false;
+    const services = this.appointmentForm.value?.Services;
+    return Array.isArray(services) && services.includes(service);
+  }
+
+  isSlotSelected(slot: string): boolean {
+    if (!this.appointmentForm) return false;
+    const timeslots = this.appointmentForm.value?.Timeslots;
+    return Array.isArray(timeslots) && timeslots.includes(slot);
+  }
+
+  toggleService(service: string): void {
+    if (!this.appointmentForm) return;
+    const currentServices = this.appointmentForm.value?.Services || [];
+    const selected = Array.isArray(currentServices) ? [...currentServices] : [];
+    const idx = selected.indexOf(service);
+    if (idx > -1) {
+      selected.splice(idx, 1);
+    } else {
+      selected.push(service);
+    }
+    this.appointmentForm.get('Services')?.setValue([...selected]);
+    this.appointmentForm.get('Services')?.markAsDirty();
+  }
+
+  toggleTimeslot(slot: string): void {
+    if (!this.appointmentForm) return;
+    const currentTimeslots = this.appointmentForm.value?.Timeslots || [];
+    const selected = Array.isArray(currentTimeslots) ? [...currentTimeslots] : [];
+    const idx = selected.indexOf(slot);
+    if (idx > -1) {
+      selected.splice(idx, 1);
+    } else {
+      selected.push(slot);
+    }
+    this.appointmentForm.get('Timeslots')?.setValue([...selected]);
+    this.appointmentForm.get('Timeslots')?.markAsDirty();
+  }
+
+
+  // ------------------- CRUD & Submission -------------------
   async onSubmit(): Promise<void> {
     if (this.appointmentForm.valid) {
       this.loading = true;
-
       try {
         const formValue = this.appointmentForm.value;
         const scheduleData: Schedule = {
           ContactName: formValue.ContactName,
           Service: formValue.Service,
           SelectedDate: formValue.SelectedDate,
-          Timeslot: formValue.Timeslot,
+          Timeslots: formValue.Timeslots, // now an array
           Note: formValue.Note || '',
           Uid: formValue.Uid || this.generateUid()
         };
-
-        // Validate data before submission
         if (!this.scheduleService.validateScheduleData(scheduleData)) {
           this.showToast('Please fill in all required fields correctly.', 'error');
           return;
         }
-
         if (this.formId === 0) {
-          // Add new schedule
           const response = await this.scheduleService.addSchedule(scheduleData);
           if (response.status === 200 || response.status === 201) {
             this.showToast('Schedule Added Successfully!', 'success');
@@ -149,7 +236,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
             this.showToast('Error Adding Schedule', 'error');
           }
         } else {
-          // Update existing schedule
           const existingSchedule = this.scheduledAppointments[this.formId];
           const response = await this.scheduleService.updateSchedule(existingSchedule.Uid, scheduleData);
           if (response.status === 200) {
@@ -158,11 +244,8 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
             this.showToast('Error Updating Schedule', 'error');
           }
         }
-        
         this.resetForm();
         this.loadSchedules();
-
-        console.log('Schedule added/updated:', scheduleData);
       } catch (error) {
         console.error('Error adding/updating schedule:', error);
         this.showToast('Error Adding/Updating Schedule', 'error');
@@ -177,26 +260,20 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
 
   editSchedule(schedule: Schedule): void {
     this.formId = this.scheduledAppointments.findIndex(s => s.Uid === schedule.Uid);
-    
-    // First populate the time slots for the selected date
-    this.populateTimeSlots(schedule.SelectedDate);
-    
-    // Then set the form values
+    const selectedServices = this.appointmentForm.get('Services')?.value || [];
+    this.loadTimeSlots(schedule.SelectedDate, selectedServices);
     this.appointmentForm.patchValue({
       ContactName: schedule.ContactName,
       Service: schedule.Service,
       SelectedDate: schedule.SelectedDate,
-      Timeslot: schedule.Timeslot,
+      Timeslots: schedule.Timeslots, // now an array
       Note: schedule.Note,
       Uid: schedule.Uid
     });
-
-    // Scroll to the form section
     const formElement = document.querySelector('.schedule-manager-card');
     if (formElement) {
       formElement.scrollIntoView({ behavior: 'smooth' });
     }
-    
     this.showToast('Schedule loaded for editing. Update the details and click "Update Schedule".', 'info');
     this.formbuttonText = 'Update Schedule';
   }
@@ -221,38 +298,29 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private generateUid(): string {
-    return Date.now().toString() + Math.random().toString(36).substr(2, 9);
-  }
-
   private resetForm(): void {
-    // Reset form with empty values and clear validation state
     this.appointmentForm.reset({
       ContactName: '',
       Service: '',
+      Services: [],
       SelectedDate: null,
-      Timeslot: null,
+      Timeslots: [],
       Note: '',
       Uid: ''
     });
-    
-    // Clear all validation states
     Object.keys(this.appointmentForm.controls).forEach(key => {
       const control = this.appointmentForm.get(key);
       control?.markAsUntouched();
       control?.markAsPristine();
       control?.setErrors(null);
     });
-    
     this.formId = 0;
     this.formbuttonText = 'Add Schedule';
-    this.appointmentForm.get('Timeslot')?.disable();
     this.availableTimeSlots = [];
   }
 
   private showToast(message: string, type: 'success' | 'error' | 'info' | 'warning'): void {
-    const duration = 3000; // 3 seconds
-    
+    const duration = 3000;
     this.snackBar.open(message, 'Close', {
       duration: duration,
       horizontalPosition: 'center',

@@ -3,7 +3,7 @@ export interface Schedule {
     ContactName: string;
     Service: string;
     SelectedDate: Date;
-    Timeslot: string;
+    Timeslots: string[];
     Note?: string;
     Uid: string;
   }
