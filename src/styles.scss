@@ -1,7 +1,7 @@
 
 html, body {
   overflow-x: hidden; // Hides horizontal scrollbar if content overflows
-  width: 100%; // Ensures body takes full width
+  width: calc(100% - 20px);
   margin: 0; // Removes default body margin
   padding: 0; // Removes default body padding
 }

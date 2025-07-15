@@ -26,7 +26,7 @@ export class ScheduleService extends BaseService {
   }
 
   validateScheduleData(schedule: Schedule): boolean {
-    const requiredFields = ['ContactName', 'Service', 'SelectedDate', 'Timeslot'];
+    const requiredFields = ['ContactName', 'SelectedDate', 'Services', 'Timeslots'];
     return this.validateRequiredFields(schedule, requiredFields);
   }
 }

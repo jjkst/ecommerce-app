@@ -65,35 +65,30 @@ export class HomeComponent implements OnInit, OnDestroy {
         Title: 'Photo Shoot', 
         Description: 'Professional photography services',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
-        Price: 1200 
       },
       { 
         Id: 0,
         Title: 'Video Shoot', 
         Description: 'High-quality video production',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
-        Price: 2500 
       },
       { 
         Id: 0,
         Title: 'Wedding Ceremony', 
         Description: 'Complete wedding photography package',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
-        Price: 3500 
       },
       { 
         Id: 0,
         Title: 'Event Filming', 
         Description: 'Professional event videography',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
-        Price: 1800 
       },
       { 
         Id: 0,
         Title: 'Portrait Session', 
         Description: 'Individual and family portraits',
         FileName: 'assets/Outdoor-Dining-and-Vistas.jpg', 
-        Price: 500 
       }
     ];
     this.testimonials = [
@@ -109,18 +104,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/services', service.Title]);
   }
 
-  addToCart(service: Service): void {
-    // Convert Service to Product for cart
-    const product = {
-      id: this.generateId(),
-      name: service.Title,
-      price: service.Price,
-      imageUrl: service.FileName
-    };
-    
-    this.cartService.addItem(product);
-    console.log(`${service.Title} added to cart!`);
-  }
 
   private generateId(): number {
     return Math.floor(Math.random() * 10000);

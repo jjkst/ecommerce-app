@@ -2,7 +2,7 @@
 <div *ngIf="cartItems.length > 0; else emptyCart">
   <ul>
     <li *ngFor="let item of cartItems">
-      {{ item.name }} - ${{ item.price }}
+      {{ item.Title }} - $75
       <button (click)="removeItem(item)">Remove</button>
     </li>
   </ul>

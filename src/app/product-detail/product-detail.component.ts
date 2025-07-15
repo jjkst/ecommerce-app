@@ -1,37 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { NgIf} from '@angular/common';
-import { Product } from '../models/product.model';
+import { CommonModule } from '@angular/common';
+import { Service } from '../models/service.model';
 import { ShoppingCartService } from '../services/shopping-cart.service';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [NgIf, RouterLink], 
+  imports: [CommonModule, RouterLink],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-  product: Product | undefined;
-  products: Product[] = [
-    { id: 1, name: 'Laptop', price: 1200 },
-    { id: 2, name: 'Mouse', price: 25 },
-    { id: 3, name: 'Keyboard', price: 75 }
-  ];
+  product: Service | undefined;
+  features?: string[];
+  pricingPlans?: Array<{ Name: string; InitialSetupFee: string; MonthlySubscription: string; Features: string[] }>;
 
   constructor(
     private route: ActivatedRoute,
-    private cartService: ShoppingCartService
+    private cartService: ShoppingCartService,
+    private productService: ProductService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.product = this.products.find(p => p.id === id);
+    // Load products from mock service
+    const response = await this.productService.getMockServices();
+    if (response.status === 200 && Array.isArray(response.body)) {
+      this.product = response.body.find((p: Service) => p.Id === id);
+      this.features = this.product?.Features;
+      this.pricingPlans = this.product?.PricingPlans;
+    }
   }
 
   addToCart(): void {
     if (this.product) {
-      this.cartService.addItem(this.product);
-      alert(`${this.product.name} added to cart!`);
+      this.cartService.addItem({
+        Id: this.product.Id ?? 0,
+        Title: this.product.Title,
+        Description: this.product.Description,
+        FileName: this.product.FileName
+      });
+      alert(`${this.product.Title} added to cart!`);
     }
   }
 }

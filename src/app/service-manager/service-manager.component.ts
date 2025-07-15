@@ -9,7 +9,10 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
+  FormArray,
+  FormControl,
   ReactiveFormsModule,
+  AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -33,31 +36,36 @@ import { HorizontalCardListComponent } from '../shared/horizontal-card-list.comp
   styleUrl: './service-manager.component.scss',
 })
 export class ServiceManagerComponent implements OnInit, OnDestroy {
-  @ViewChild('fileInput') fileInput!: ElementRef;
   serviceForm!: FormGroup;
   formbuttonText = 'Add Service';
   formId = 0;
   loading = false;
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
   file: File | undefined;
   fileName: string = '';
   fileUploadError: string | null = null;
-  private destroy$ = new Subject<void>();
 
+  private destroy$ = new Subject<void>();
+  public fb: FormBuilder;
   services: Service[] = [];
 
   constructor(
-    private fb: FormBuilder,
+    fb: FormBuilder,
     private productService: ProductService,
     private imguploadService: ImageUploadService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.fb = fb;
+  }
 
   ngOnInit(): void {
     this.serviceForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       fileName: [''],
-      hourlyPrice: ['', [Validators.required, Validators.min(0)]],
+      features: this.fb.array([]),
+      pricingPlans: this.fb.array([])
     });
     this.loadServices();
   }
@@ -65,6 +73,35 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get features(): FormArray {
+    return this.serviceForm.get('features') as FormArray;
+  }
+
+  get pricingPlans(): FormArray {
+    return this.serviceForm.get('pricingPlans') as FormArray;
+  }
+
+  addFeature(value: string = ''): void {
+    this.features.push(new FormControl(value));
+  }
+
+  removeFeature(index: number): void {
+    this.features.removeAt(index);
+  }
+
+  addPricingPlan(plan: any = { name: '', initialSetupFee: '', monthlySubscription: '', features: [] }): void {
+    this.pricingPlans.push(this.fb.group({
+      name: [plan.name],
+      initialSetupFee: [plan.initialSetupFee],
+      monthlySubscription: [plan.monthlySubscription],
+      features: this.fb.array((plan.features || []).map((f: string) => new FormControl(f)))
+    }));
+  }
+
+  removePricingPlan(index: number): void {
+    this.pricingPlans.removeAt(index);
   }
 
   async onSubmit(): Promise<void> {
@@ -75,9 +112,10 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
       const addUpdateService: Service = {
         Id: this.formId,
         Title: formValue.title,
-        Description: formValue.description,
         FileName: this.fileName || 'default-image.jpg',
-        Price: formValue.hourlyPrice,
+        Description: formValue.description,
+        Features: formValue.features,
+        PricingPlans: formValue.pricingPlans
       };
 
       if (!this.productService.validateServiceData(addUpdateService)) {
@@ -88,7 +126,7 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
         this.loading = false;
         return;
       }
-
+      console.log(addUpdateService);
       try {
         const response =
           this.formId === 0
@@ -200,15 +238,23 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
     this.serviceForm.patchValue({
       title: service.Title,
       description: service.Description,
-      hourlyPrice: service.Price,
     });
-
+    // Reset and repopulate features
+    this.features.clear();
+    (service.Features || []).forEach(f => this.addFeature(f));
+    // Reset and repopulate pricingPlans
+    this.pricingPlans.clear();
+    (service.PricingPlans || []).forEach(plan => this.addPricingPlan({
+      name: plan.Name,
+      initialSetupFee: plan.InitialSetupFee,
+      monthlySubscription: plan.MonthlySubscription,
+      features: plan.Features
+    }));
     // Scroll to the form section
     const formElement = document.querySelector('.service-manager-card');
     if (formElement) {
       formElement.scrollIntoView({ behavior: 'smooth' });
     }
-
     this.showToast(
       'Service loaded for editing. Update the details and click "Update Service".',
       'info'
@@ -251,14 +297,14 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
   }
 
   private resetForm(): void {
-    // Reset form with empty values and clear validation state
     this.serviceForm.reset({
       title: '',
       description: '',
       fileName: '',
       hourlyPrice: '',
     });
-
+    this.features.clear();
+    this.pricingPlans.clear();
     this.formId = 0;
     this.formbuttonText = 'Add Service';
     this.clearFileInput();
@@ -279,5 +325,9 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
 
   getServiceTitle(service: Service): string {
     return service.Title;
+  }
+
+  public getPlanFeatures(planGroup: AbstractControl): FormArray {
+    return planGroup.get('features') as FormArray;
   }
 }

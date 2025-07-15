@@ -6,18 +6,18 @@
   </div>
   <div class="mobile-branding">
     <div class="branding-content">
-      <img src="assets/ruku-logo-rmbk.png" alt="Ruku IT Services Logo" class="logo">
+      <img src="assets/ruku-logo-1.png" alt="Ruku IT Services Logo" class="logo">
       <div class="company-name">Ruku IT Services</div>
     </div>
   </div>
   <div class="company">photography</div>
   <nav class="nav-links" [ngClass]="{'open': isMenuOpen}">
     <ul>
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Services</a></li>
-      <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
-      <li><a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a></li>
+      <li><a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">Services</a></li>
+      <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About Us</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active" (click)="closeMenu()">Schedule</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
+      <li><a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Orders</a></li>
       <li *ngIf="isLoggedIn">
         <a (click)="toggleSubMenu()">Admin</a>
         <ul *ngIf="isSubMenuOpen" class="submenu">
@@ -34,7 +34,7 @@
   <div class="company-branding">
     <a routerLink="/" >
       <div class="branding-content">
-        <img src="assets/ruku-logo-rmbk.png" alt="Ruku IT Services Logo" class="logo">
+        <img src="assets/ruku-logo-1.png" alt="Ruku IT Services Logo" class="logo">
         <span class="title">Ruku IT Services</span>
       </div>
     </a>
@@ -42,11 +42,11 @@
 
   <div class="nav-menu">
     <ul>
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Services</a></li>
-      <li><a routerLink="/about" routerLinkActive="active">About</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
-      <li><a routerLink="/cart" routerLinkActive="active">Cart</a></li>
+      <li><a routerLink="/services" routerLinkActive="active">Services</a></li>
+      <li><a routerLink="/about" routerLinkActive="active">About Us</a></li>
       <li><a routerLink="/schedule" routerLinkActive="active">Schedule</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      <li><a routerLink="/cart" routerLinkActive="active">Orders</a></li>
       <li class="has-submenu" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false">
         <a (click)="toggleSubMenu()">Admin</a>
         <ul *ngIf="isSubMenuOpen" class="submenu">

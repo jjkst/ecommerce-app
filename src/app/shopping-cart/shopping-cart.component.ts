@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule} from '@angular/common';
-import { Product } from '../models/product.model';
+import { Service } from '../models/service.model';
 import { ShoppingCartService } from '../services/shopping-cart.service';
 import { MaterialModule } from '../material.module';
 
@@ -11,7 +11,7 @@ import { MaterialModule } from '../material.module';
   styleUrls: ['./shopping-cart.component.scss']
 })
 export class ShoppingCartComponent implements OnInit {
-  cartItems: Product[] = [];
+  cartItems: Service[] = [];
 
   constructor(private cartService: ShoppingCartService) { }
 
@@ -19,12 +19,12 @@ export class ShoppingCartComponent implements OnInit {
     this.cartItems = this.cartService.getItems();
   }
 
-  removeItem(product: Product): void {
+  removeItem(product: Service): void {
     this.cartService.removeItem(product);
     this.cartItems = this.cartService.getItems(); // Update the view
   }
 
   get total(): number {
-    return this.cartItems.reduce((sum, item) => sum + item.price, 0);
+    return this.cartItems.reduce((sum, item) => sum + 10, 0);
   }
 }

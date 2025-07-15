@@ -16,10 +16,8 @@
 
   <ng-template #scheduleContentTemplate let-schedule>
     <!-- Schedule content information -->
-    <p><strong>Contact:</strong> {{ schedule.ContactName }}</p>
-    <p><strong>Service:</strong> {{ schedule.Service }}</p>
-    <p><strong>Date:</strong> {{ schedule.SelectedDate | date:'mediumDate' }}</p>
-    <p><strong>Time:</strong> {{ schedule.Timeslot }}</p>
+    <p><strong>Services: </strong> {{ schedule.Services.join(', ') }}</p>
+    <p><strong>Selected Timeslots: </strong> {{ schedule.Timeslots.join(', ') }}</p>
     <p *ngIf="schedule.Note"><strong>Note:</strong> {{ schedule.Note }}</p>
   </ng-template>
 

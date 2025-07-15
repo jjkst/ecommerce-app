@@ -1,10 +1,41 @@
-<div *ngIf="product">
-    <h2>{{ product.name }}</h2>
-    <p>Price: ${{ product.price }}</p>
-    <button (click)="addToCart()">Add to Cart</button>
-    <button routerLink="/">Back to Products</button>
+<ng-container *ngIf="product">
+  <h2 class="product-title">{{ product.Title }}</h2>
+  <div class="product-detail-container">
+    <div class="product-detail-row">
+      <div class="product-image">
+        <img [src]="product.FileName" [alt]="product.Title" />
+      </div>
+      <div class="product-info">
+        <div class="product-description">
+          <h3>Overview</h3>
+          <p>{{ product.Description }}</p>
+          <h3>Features</h3>
+          <ul>
+            <li *ngFor="let feature of features">{{ feature }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="pricing-plans-section">
+      <h3 class="pricing-title">Our Pricing Plans</h3>
+      <div class="pricing-plans">
+        <div class="plan-card" *ngFor="let plan of pricingPlans">
+          <h4>{{ plan.Name }}</h4>
+          <div class="plan-price">{{ plan.InitialSetupFee }}</div>
+          <div class="plan-price">{{ plan.MonthlySubscription }}</div>
+          <ul>
+            <li *ngFor="let pf of plan.Features">{{ pf }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="product-actions">
+      <button (click)="addToCart()">Book Now</button>
+      <button routerLink="/services">Back to Products</button>
+    </div>
   </div>
-  <div *ngIf="!product">
-    <p>Product not found.</p>
-    <button routerLink="/">Back to Products</button>
-  </div>
+</ng-container>
+<div *ngIf="!product">
+  <p>Product not found.</p>
+  <button routerLink="/services">Back to Products</button>
+</div>

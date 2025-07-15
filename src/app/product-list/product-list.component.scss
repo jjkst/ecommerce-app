@@ -1,0 +1,113 @@
+.video-container {
+  text-align: center; /* Center the video */
+}
+
+.video-player { 
+  width: 100%; /* Make the video responsive */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+  margin-top: 10px;;
+}
+
+h1 {
+  text-align: center;
+  font-weight: lighter;
+  color: orangered;
+}
+
+p {
+  text-align: center;
+  color: #555;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Creates 3 equal columns */
+  grid-row-gap: 20px; /* Spacing between rows */
+  grid-column-gap: 5px; /* Spacing between columns */
+  padding: 20px; /* Optional padding around the grid */
+}
+
+mat-card-content {
+  
+  padding: 0; /* Optional: Adjust padding */
+}
+
+mat-card {
+  border-radius: 8px;
+  overflow: hidden; /* To contain rounded corners of image */
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: none; /* Remove the border */
+  box-shadow: none;
+  background-color: white;
+}
+
+mat-card-title {
+  font-size: 24px;
+  text-align: center;
+  margin: 20px;
+}
+
+.mat-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mat-card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure image covers the container */
+}
+
+.testimony-section {
+  text-align: center; /* Center-align the content */
+  padding: 20px; /* Add padding around the section */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  margin: 10px;
+  background-image: linear-gradient(
+    rgba(0, 0, 0, 0.1), /* Semi-transparent black overlay */
+    rgba(0, 0, 0, 0.1)
+  ),
+  url("../../assets/Outdoor-Dining-and-Vistas.jpg"); /* Path to the background image */
+  background-size: cover; /* Ensure the image covers the entire section */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+
+}
+
+.testimony-section h2 {
+  font-size: 1.8em;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.testimony {
+  margin-bottom: 20px;
+}
+
+.testimony p {
+  font-style: italic;
+  color: white;
+}
+
+.testimony span {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: blue; /* Optional: Add primary color for names */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr); /* Switch to 2 columns */
+  }
+}
+
+@media (max-width: 576px) {
+  .card-grid {
+    grid-template-columns: 1fr; /* Switch to 1 column */
+  }
+}

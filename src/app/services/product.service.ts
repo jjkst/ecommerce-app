@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Service } from '../models/service.model';
 import { BaseService } from './base.service';
+import { MOCK_PRODUCTS } from './mock-products';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,11 @@ export class ProductService extends BaseService {
 
   async getServices(): Promise<HttpResponse<any[]>> {
     return await this.get<Service[]>(this.endpoint);
+  }
+
+  async getMockServices(): Promise<HttpResponse<Service[]>> {
+    // Return mock products as a resolved HttpResponse
+    return new HttpResponse({ body: MOCK_PRODUCTS, status: 200 });
   }
 
   async addService(serviceData: Service): Promise<HttpResponse<Service>> {
@@ -26,7 +32,7 @@ export class ProductService extends BaseService {
   }
 
   validateServiceData(service: Service): boolean {
-    const requiredFields = ['Title', 'Description', 'Price'];
+    const requiredFields = ['Title', 'Description', 'Features', 'PricingPlans'];
     return this.validateRequiredFields(service, requiredFields);
   }
 }

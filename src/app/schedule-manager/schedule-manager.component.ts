@@ -70,8 +70,8 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   private initializeForm(): void {
     this.appointmentForm = this.fb.group({
       ContactName: ['', Validators.required],
-      Services: [[]],
       SelectedDate: [null, Validators.required],
+      Services: [[], Validators.required],
       Timeslots: [[], Validators.required],
       Note: [''],
       Uid: ['']
@@ -92,7 +92,16 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     try {
       const response = await this.scheduleService.getSchedules();
       if (response.status === 200 && Array.isArray(response.body)) {
-        this.scheduledAppointments = response.body || [];
+        this.scheduledAppointments =
+          response.body.map((schedule) => ({
+            Id: schedule.id,
+            ContactName: schedule.contactName,
+            SelectedDate: schedule.selectedDate,
+            Services: schedule.services,
+            Timeslots: schedule.timeslots,
+            Uid: '',
+            Notes: schedule.note
+          })) || [];
       }
     } catch (error) {
       console.error('Error loading schedules:', error);
@@ -123,7 +132,7 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
         this.availableServices = [];
         return;
       }
-      const response = await this.availabilityService.getAvailableServicesByDate(date);
+      const response = await this.availabilityService.getAvailableServicesByDate(this.formatDateToYMD(new Date(date)));
       if (response.status === 200 && Array.isArray(response.body)) {
         this.availableServices = response.body;
       } else {
@@ -218,13 +227,14 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
         const formValue = this.appointmentForm.value;
         const scheduleData: Schedule = {
           ContactName: formValue.ContactName,
-          Service: formValue.Service,
           SelectedDate: formValue.SelectedDate,
+          Services: formValue.Services,
           Timeslots: formValue.Timeslots, // now an array
           Note: formValue.Note || '',
           Uid: formValue.Uid || this.generateUid()
         };
         if (!this.scheduleService.validateScheduleData(scheduleData)) {
+          console.log('scedule data: ', scheduleData);
           this.showToast('Please fill in all required fields correctly.', 'error');
           return;
         }
@@ -264,9 +274,9 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     this.loadTimeSlots(schedule.SelectedDate, selectedServices);
     this.appointmentForm.patchValue({
       ContactName: schedule.ContactName,
-      Service: schedule.Service,
       SelectedDate: schedule.SelectedDate,
-      Timeslots: schedule.Timeslots, // now an array
+      Services: schedule.Services,
+      Timeslots: schedule.Timeslots, 
       Note: schedule.Note,
       Uid: schedule.Uid
     });
@@ -301,9 +311,8 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   private resetForm(): void {
     this.appointmentForm.reset({
       ContactName: '',
-      Service: '',
-      Services: [],
       SelectedDate: null,
+      Services: [],
       Timeslots: [],
       Note: '',
       Uid: ''
@@ -334,6 +343,10 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   }
 
   getScheduleTitle(schedule: Schedule): string {
-    return `${schedule.ContactName} - ${schedule.Service}`;
+    return schedule.SelectedDate ? new Date(schedule.SelectedDate).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }) : 'No date';
   }
 }

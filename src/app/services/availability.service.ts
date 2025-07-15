@@ -17,8 +17,7 @@ export class AvailabilityService extends BaseService {
     return await this.get<Availability[]>(this.endpoint + '/dates');
   }
 
-  async getAvailableServicesByDate(date: Date): Promise<HttpResponse<any[]>> {
-    var datestring = date.toISOString().slice(0, 10);
+  async getAvailableServicesByDate(datestring: string): Promise<HttpResponse<any[]>> {
     return await this.get<Availability[]>(this.endpoint + `/services?date=${datestring}`);
   }
 

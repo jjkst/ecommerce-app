@@ -1,25 +1,25 @@
 // src/app/shopping-cart.service.ts
 import { Injectable } from '@angular/core';
-import { Product } from '../models/product.model';
+import { Service } from '../models/service.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ShoppingCartService {
-  items: Product[] = [];
+  items: Service[] = [];
 
   constructor() { }
 
-  addItem(product: Product): void {
+  addItem(product: Service): void {
     this.items.push(product);
   }
 
-  getItems(): Product[] {
+  getItems(): Service[] {
     return this.items;
   }
 
-  removeItem(product: Product): void {
+  removeItem(product: Service): void {
     const index = this.items.indexOf(product);
     if (index >= 0) {
       this.items.splice(index, 1);

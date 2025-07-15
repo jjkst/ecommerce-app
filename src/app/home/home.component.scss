@@ -13,9 +13,11 @@
 .ruku-services img{
   display: block; /* Important: Make the image a block-level element */
   width: calc(100% - 20px);
+  max-width: 1200px;
   height: 80vh;
   margin: 10px auto;  /* This centers it horizontally */
-  overflow: hidden; 
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 h1 {

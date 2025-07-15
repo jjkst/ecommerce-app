@@ -1,0 +1,238 @@
+.product-detail-container {
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  max-width: 1200px;
+}
+
+.product-detail-row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.product-image {
+  flex: 1 1 50%;
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.product-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.product-info {
+  flex: 1 1 50%;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  background: #faf8f6;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  padding: 24px 28px 20px 28px;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 100%;
+}
+
+.product-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #3d2c1e;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.product-price {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #6d4c2f;
+  margin: 0 0 18px 0;
+  text-align: center;
+}
+
+.product-description {
+  font-size: 1.08rem;
+  color: #444;
+  margin-bottom: 18px;
+  min-height: 120px;
+  width: 100%;
+  padding: 18px 12px 18px 12px;
+  line-height: 1.6;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: left;
+  align-self: flex-start;
+  box-sizing: border-box;
+}
+
+.product-description h3 {
+  font-size: 1.15rem;
+  color: #6d4c2f;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.product-description ul {
+  margin: 0 0 12px 18px;
+  padding: 0;
+  list-style: disc inside;
+}
+.product-description li {
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+}
+.product-description .info-box {
+  background: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 10px 14px;
+  margin: 12px 0 0 0;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #6d4c2f;
+}
+
+.product-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+  margin: 40px auto 0 auto;
+  padding-bottom: 24px;
+  width: 100%;
+  max-width: 600px;
+}
+
+button {
+  padding: 8px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background: #6d4c2f;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 2px;
+}
+button:hover {
+  background: #3d2c1e;
+}
+
+.pricing-plans-section {
+  margin: 40px auto 0 auto;
+  text-align: center;
+  max-width: 1000px;
+}
+.pricing-title {
+  font-size: 1.5rem;
+  color: #6d4c2f;
+  margin-bottom: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.pricing-plans {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 0;
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+.plan-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 28px 24px 20px 24px;
+  min-width: 240px;
+  max-width: 320px;
+  flex: 1 1 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #f5e6d8;
+  transition: box-shadow 0.2s, border 0.2s;
+  height: auto;
+  box-sizing: border-box;
+}
+.plan-card h4 {
+  font-size: 1.2rem;
+  color: #3d2c1e;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.plan-price {
+  font-size: 1.4rem;
+  color: #ff9800;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.plan-card ul {
+  text-align: left;
+  margin: 0 0 0 0;
+  padding: 0 0 0 18px;
+  list-style: disc inside;
+}
+.plan-card li {
+  margin-bottom: 7px;
+  font-size: 1.05rem;
+  color: #444;
+}
+.plan-card.featured {
+  border: 2.5px solid #ff9800;
+  box-shadow: 0 4px 18px rgba(255,152,0,0.10);
+  background: #fff8e1;
+}
+@media (max-width: 900px) {
+  .product-detail-row {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .product-image, .product-info {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+  .product-image img {
+    width: 98vw;
+    max-width: 350px;
+    height: auto;
+  }
+  .product-info {
+    padding: 16px 8px 12px 8px;
+  }
+  .product-description {
+    min-height: 80px;
+    font-size: 1rem;
+    padding: 10px 4px 10px 4px;
+  }
+  .pricing-plans {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  .plan-card {
+    min-width: 220px;
+    max-width: 98vw;
+    width: 100%;
+    height: auto;
+  }
+}
