@@ -221,9 +221,15 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
           response.body.map((service) => ({
             Id: service.id,
             Title: service.title,
-            Description: service.description,
-            Price: service.price,
             FileName: service.fileName,
+            Description: service.description,
+            Features: service.features,
+            PricingPlans: service.pricingPlans.map((pp: any) => ({
+              Name: pp.name,
+              InitialSetupFee: pp.initialSetupFee,
+              MonthlySubscription: pp.monthlySubscription,
+              Features: pp.features
+            }))
           })) || [];
       }
     } catch (error) {
@@ -240,8 +246,10 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
       description: service.Description,
     });
     // Reset and repopulate features
+    console.log('Features:', service.Features);
     this.features.clear();
     (service.Features || []).forEach(f => this.addFeature(f));
+    console.log('Features FormArray length:', this.features.length);
     // Reset and repopulate pricingPlans
     this.pricingPlans.clear();
     (service.PricingPlans || []).forEach(plan => this.addPricingPlan({
@@ -286,7 +294,7 @@ export class ServiceManagerComponent implements OnInit, OnDestroy {
     message: string,
     type: 'success' | 'error' | 'info' | 'warning'
   ): void {
-    const duration = 3000; // 3 seconds
+    const duration = 3000;
 
     this.snackBar.open(message, 'Close', {
       duration: duration,
